@@ -14,7 +14,7 @@ export default function Home() {
           <div className="hero-copy">
             <p className="hero-eyebrow"><span aria-hidden="true" />Psicologia fundamentada em ciência</p>
             <h1 id="hero-heading">Compreender o<br className="wide-break" /> comportamento.<br />Cuidar de <em>pessoas.</em></h1>
-            <p className="hero-description">Cada pessoa tem uma história. Um olhar atento ao seu contexto e uma escuta cuidadosa abrem caminhos para compreender o que você vive.</p>
+            <p className="hero-description">Cada pessoa tem uma história. Entender seu contexto e escutar cuidadosamente abrem caminhos para compreender o que você vive.</p>
             <Link prefetch={false} className="button button-dark" href="/sobre/">Conheça meu trabalho <Arrow direction="diagonal" /></Link>
             <div className="hero-signature">
               <span className="signature-rule" aria-hidden="true" />
@@ -37,7 +37,7 @@ export default function Home() {
         <div className="container principles-grid">
           {[
             ["01", "Ciência", "Uma prática orientada pelo conhecimento científico."],
-            ["02", "Contexto", "Sua história e suas relações como ponto de partida."],
+            ["02", "Contexto", "Suas relações e sua história de aprendizagem como pontos de partida."],
             ["03", "Cuidado", "Respeito à singularidade de cada pessoa."],
           ].map(([number, title, text]) => <div className="principle" key={number}><span className="principle-number" aria-hidden="true">{number}</span><div><h2>{title}</h2><p>{text}</p></div></div>)}
         </div>
@@ -51,7 +51,7 @@ export default function Home() {
             <EditorialImage position="inicio" />
           </div>
           <div className="about-copy">
-            <p className="lead">Sou Eduardo Villela Tumani, psicólogo. Meu trabalho considera a história, as relações e o contexto de cada pessoa.</p>
+            <p className="lead">Sou Eduardo Villela Tumani, psicólogo há mais de 15 anos. Meu trabalho considera não apenas o que cada pessoa sente, pensa e faz, mas também sua história de aprendizagem, suas relações e os contextos em que esses comportamentos se desenvolvem e se mantêm.</p>
             <p>A ciência do comportamento orienta uma prática de escuta e investigação, com respeito ao que você vive e sente.</p>
             <div className="specialties" aria-label="Especializações"><span>Terapia Analítico-Comportamental</span><span>Avaliação Psicológica</span></div>
             <Link prefetch={false} className="text-link" href="/sobre/">Conheça minha atuação <Arrow direction="diagonal" /></Link>
@@ -63,19 +63,19 @@ export default function Home() {
         <div className="container">
           <div className="section-intro-row">
             <div><SectionLabel number="02">Áreas de atuação</SectionLabel><h2 className="section-heading" id="services-heading">Diferentes caminhos.<br />O mesmo <em>cuidado.</em></h2></div>
-            <p>Processos construídos com responsabilidade, de acordo com a singularidade de cada pessoa e com os objetivos de cada trabalho.</p>
+            <p>Processos construídos com responsabilidade, de acordo com a singularidade de cada pessoa e com os objetivos de cada demanda.</p>
           </div>
           <div className="services-grid">
             <Link prefetch={false} className="service-card" href="/psicoterapia/" aria-labelledby="therapy-title therapy-link">
               <div className="service-card-top"><span className="service-number" aria-hidden="true">01 /</span><span className="service-arrow"><Arrow direction="diagonal" /></span></div>
               <h3 id="therapy-title">Psicoterapia</h3>
-              <p>Um espaço para compreender sentimentos, comportamentos e relações, investigando outras formas de lidar com o que você vive.</p>
+              <p>Um espaço para compreender sentimentos, comportamentos e relações, construindo, em conjunto, novas formas de lidar com o que você vive.</p>
               <span className="service-link" id="therapy-link">Conheça o processo <Arrow /></span>
             </Link>
             <Link prefetch={false} className="service-card" href="/avaliacao-psicologica/" aria-labelledby="assessment-title assessment-link">
               <div className="service-card-top"><span className="service-number" aria-hidden="true">02 /</span><span className="service-arrow"><Arrow direction="diagonal" /></span></div>
               <h3 id="assessment-title">Avaliação Psicológica</h3>
-              <p>Uma investigação que integra diferentes fontes de informação para responder a uma demanda específica, com rigor técnico e ético.</p>
+              <p>Uma investigação que integra diferentes formas de informação para responder a uma demanda específica, com rigor técnico, científico e ético.</p>
               <span className="service-link" id="assessment-link">Entenda a avaliação <Arrow /></span>
             </Link>
           </div>
@@ -93,7 +93,7 @@ export default function Home() {
             <SectionLabel number="03">Minha abordagem</SectionLabel>
             <h2 className="section-heading" id="approach-heading">Ninguém existe<br /><em>fora de uma história.</em></h2>
             <p>A Terapia Analítico-Comportamental busca compreender como o que fazemos, pensamos e sentimos se relaciona com nossas experiências e com o ambiente em que vivemos.</p>
-            <p>A análise funcional investiga em quais situações um comportamento aparece e o que acontece antes e depois dele. Junto à história de aprendizagem, ajuda a compreender o papel desses padrões na vida da pessoa.</p>
+            <p>A análise funcional investiga em quais situações um comportamento aparece e o que acontece antes e depois dele. Junto à história de aprendizagem, ajuda a compreender o papel desses padrões na vida da pessoa e a identificar condições que favoreçam sua mudança.</p>
             <Link prefetch={false} className="text-link" href="/psicoterapia/">Saiba mais sobre a psicoterapia <Arrow direction="diagonal" /></Link>
           </div>
         </div>
