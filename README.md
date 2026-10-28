@@ -6,7 +6,7 @@ Psicólogo - CRP 06/127526
 
 Formação e Especializações:
 - Psicologia pela Universidade Mackenzie
-- Terapia Analítico-Comportamental pela PUCPR 
+- Terapia Analítico-Comportamental pela PUC Paraná
 - Avaliação Psicológica pela PUC Campinas
 - Neurociências pela Faculdade Sírio Libanês (em andamento)
 
