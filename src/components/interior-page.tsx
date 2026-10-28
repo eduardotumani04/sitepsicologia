@@ -23,7 +23,7 @@ export function InteriorPage({
     <>
       <section className="interior-hero" aria-labelledby="page-title">
         <div className="container">
-          <Link href={backHref} className="back-link"><Arrow /> {backLabel}</Link>
+          <Link prefetch={false} href={backHref} className="back-link"><Arrow /> {backLabel}</Link>
           <SectionLabel>{eyebrow}</SectionLabel>
           <h1 id="page-title">{title}</h1>
           <p className="interior-intro">{intro}</p>

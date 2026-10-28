@@ -25,9 +25,19 @@ export function SiteHeader() {
     }
     document.addEventListener("keydown", onKeyDown);
     document.addEventListener("pointerdown", onPointerDown);
+    const desktop = window.matchMedia("(min-width: 1024px)");
+    function onDesktop() {
+      if (!desktop.matches) return;
+      const focused = document.activeElement;
+      const focusWasInMenu = focused === menuButton.current || header.current?.querySelector("#mobile-navigation")?.contains(focused);
+      setMenuOpen(false);
+      if (focusWasInMenu) header.current?.querySelector<HTMLAnchorElement>(".brand")?.focus();
+    }
+    desktop.addEventListener("change", onDesktop);
     return () => {
       document.removeEventListener("keydown", onKeyDown);
       document.removeEventListener("pointerdown", onPointerDown);
+      desktop.removeEventListener("change", onDesktop);
     };
   }, [menuOpen]);
 
@@ -38,18 +48,20 @@ export function SiteHeader() {
   }
 
   return (
-    <header className="site-header" ref={header}>
+    <header className="site-header" ref={header} onBlur={event => {
+      if (!event.currentTarget.contains(event.relatedTarget)) setMenuOpen(false);
+    }}>
       <div className="container header-inner">
-        <Link href="/" className="brand" aria-label={`${site.name} — página inicial`} onClick={() => setMenuOpen(false)}>
+        <Link prefetch={false} href="/" className="brand" aria-label={`${site.name} — página inicial`} onClick={() => setMenuOpen(false)}>
           <span className="brand-name">Eduardo Villela Tumani<span className="brand-dot">.</span></span>
           <span className="brand-registration">Psicólogo <span aria-hidden="true">·</span> {site.registration}</span>
         </Link>
         <nav className="desktop-nav" aria-label="Navegação principal">
           {navigation.map(({ href, label }) => (
-            <Link key={href} href={href} aria-current={isActive(href) ? "page" : undefined}>{label}</Link>
+            <Link prefetch={false} key={href} href={href} aria-current={isActive(href) ? "page" : undefined}>{label}</Link>
           ))}
         </nav>
-        <Link href="/contato/" className="header-contact">Vamos conversar <Arrow direction="diagonal" /></Link>
+        <Link prefetch={false} href="/contato/" className="header-contact">Vamos conversar <Arrow direction="diagonal" /></Link>
         <button
           type="button"
           className="menu-toggle"
@@ -66,7 +78,7 @@ export function SiteHeader() {
         <nav id="mobile-navigation" className="mobile-nav" aria-label="Navegação principal móvel" hidden={!menuOpen}>
           <div className="container">
             {[...navigation, { href: "/contato/", label: "Contato" }].map(({ href, label }, index) => (
-              <Link key={href} href={href} aria-current={isActive(href) ? "page" : undefined} onClick={() => setMenuOpen(false)}>
+              <Link prefetch={false} key={href} href={href} aria-current={isActive(href) ? "page" : undefined} onClick={() => setMenuOpen(false)}>
                 <span className="mobile-nav-number" aria-hidden="true">0{index + 1}</span>
                 {label}<Arrow direction="diagonal" />
               </Link>

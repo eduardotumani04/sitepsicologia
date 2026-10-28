@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { InteriorPage } from "@/components/interior-page";
 import { ArticleCard } from "@/components/article-card";
 import { EditorialNote } from "@/components/editorial-note";
@@ -8,11 +8,12 @@ import { articleCategories } from "@/content/article-types";
 const published = articles.filter(article => article.status === "published");
 const drafts = articles.filter(article => article.status === "draft");
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Conteúdos",
   description: "Um espaço para artigos autorais sobre Psicologia, comportamento humano e neurociências. Conheça os rascunhos editoriais disponíveis para revisão.",
-  robots: { index: published.length > 0, follow: published.length > 0 },
-};
+  path: "/conteudos/",
+  indexable: published.length > 0,
+});
 
 export default function ContentPage() {
   return (

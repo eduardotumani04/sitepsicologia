@@ -7,7 +7,7 @@ export function ArticleCard({ article }: { article: Article }) {
   const draft = article.status === "draft";
   const date = articleDate(article);
   return (
-    <Link className="article-card" href={`/conteudos/${article.slug}/`} aria-labelledby={`${article.slug}-title ${article.slug}-action`}>
+    <Link prefetch={false} className="article-card" href={`/conteudos/${article.slug}/`} aria-labelledby={`${article.slug}-title ${article.slug}-action`}>
       <div className="article-card-meta"><span>{articleCategories[article.category]}</span><span className="article-status">{draft ? "Rascunho editorial" : "Artigo publicado"}</span></div>
       <h3 id={`${article.slug}-title`}>{article.title}</h3>
       <p>{article.summary}</p>

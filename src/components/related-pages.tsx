@@ -6,7 +6,7 @@ export function RelatedPages({ pages }: { pages: readonly { href: string; title:
     <nav className="related-pages" aria-label="Continue a leitura">
       <h2>Continue a leitura</h2>
       {pages.map(page => (
-        <Link className="related-page" key={page.href} href={page.href}>
+        <Link prefetch={false} className="related-page" key={page.href} href={page.href}>
           <span><strong>{page.title}</strong><span>{page.description}</span></span>
           <Arrow direction="diagonal" />
         </Link>

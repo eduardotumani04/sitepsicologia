@@ -1,13 +1,14 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { InteriorPage } from "@/components/interior-page";
 import { ContactInvitation } from "@/components/contact-invitation";
 import { EditorialNote } from "@/components/editorial-note";
 import { RelatedPages } from "@/components/related-pages";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Avaliação Psicológica",
   description: "Entenda o que é Avaliação Psicológica, como diferentes fontes de informação são integradas e por que o processo exige cuidado técnico, científico e ético.",
-};
+  path: "/avaliacao-psicologica/",
+});
 
 const sections = [
   { id: "o-que-e", title: "O que é avaliação" },

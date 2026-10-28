@@ -1,13 +1,14 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { InteriorPage } from "@/components/interior-page";
 import { ContactInvitation } from "@/components/contact-invitation";
 import { EditorialNote } from "@/components/editorial-note";
 import { RelatedPages } from "@/components/related-pages";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Sobre mim",
   description: "Conheça a atuação de Eduardo Villela Tumani, psicólogo — CRP 06/127526, com especializações em Terapia Analítico-Comportamental e Avaliação Psicológica.",
-};
+  path: "/sobre/",
+});
 
 const sections = [
   { id: "apresentacao", title: "Minha atuação" },

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { articleCategories } from "@/content/article-types";
 import { articles, articleDate, formatArticleDate, getArticle } from "@/lib/articles";
 import { site } from "@/lib/site";
+import { pageMetadata } from "@/lib/seo";
 import { InteriorPage } from "@/components/interior-page";
 import { EditorialNote } from "@/components/editorial-note";
 import { Arrow } from "@/components/arrow";
@@ -22,15 +23,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!article) notFound();
   const draft = article.status === "draft";
   const title = `${draft ? "Rascunho: " : ""}${article.title}`;
-  return {
+  return pageMetadata({
     title,
     description: article.summary,
-    robots: { index: !draft, follow: !draft },
-    openGraph: {
-      title, description: article.summary, type: "article", locale: "pt_BR",
-      ...(article.status === "published" ? { publishedTime: article.publishedAt } : {}),
-    },
-  };
+    path: `/conteudos/${article.slug}/`,
+    indexable: !draft,
+    follow: !draft,
+    ...(article.status === "published" ? { publishedAt: article.publishedAt } : {}),
+  });
 }
 
 export default async function ArticlePage({ params }: Props) {
@@ -73,7 +73,7 @@ export default async function ArticlePage({ params }: Props) {
             <ul className="information-list">{article.references.map(reference => <li key={reference.url}><a href={reference.url} rel="noreferrer">{reference.title}</a></li>)}</ul>
           </section>
         )}
-        <div className="article-endnote"><p>Conteúdo informativo. A leitura não substitui a avaliação ou o acompanhamento psicológico individualizado.</p><Link href="/conteudos/" className="text-link">Voltar aos conteúdos <Arrow /></Link></div>
+        <div className="article-endnote"><p>Conteúdo informativo. A leitura não substitui a avaliação ou o acompanhamento psicológico individualizado.</p><Link prefetch={false} href="/conteudos/" className="text-link">Voltar aos conteúdos <Arrow /></Link></div>
       </InteriorPage>
     </article>
   );

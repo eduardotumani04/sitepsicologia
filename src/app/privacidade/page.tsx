@@ -1,13 +1,14 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { InteriorPage } from "@/components/interior-page";
 import { EditorialNote } from "@/components/editorial-note";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Política de Privacidade",
   description: "Estrutura inicial para revisão da Política de Privacidade, baseada nas funcionalidades efetivamente implementadas no site de Eduardo Villela Tumani.",
-  robots: { index: false, follow: true },
-};
+  path: "/privacidade/",
+  indexable: false,
+});
 
 const sections = [
   { id: "escopo", title: "Escopo desta versão" },
@@ -34,8 +35,8 @@ export default function PrivacyPage() {
       </section>
       <section className="reading-section" id="navegacao" aria-labelledby="navegacao-titulo">
         <h2 id="navegacao-titulo">Recursos necessários à navegação</h2>
-        <p>O navegador faz requisições para receber as páginas, os estilos, os scripts de navegação, as imagens e os arquivos de fonte. A navegação pode antecipar o carregamento de páginas internas para facilitar a transição entre elas.</p>
-        <p>As imagens e as fontes são entregues junto aos arquivos do próprio site. A Manrope é obtida pelo processo de build e não por uma requisição do navegador do visitante ao Google Fonts.</p>
+        <p>O navegador faz requisições para receber as páginas, os estilos, os scripts de navegação, as imagens e os arquivos de fonte. Ao abrir um link interno, o navegador solicita os arquivos necessários à página escolhida.</p>
+        <p>As imagens e a fonte Manrope são entregues pelo próprio site. A visita não provoca requisições ao Google Fonts ou a outros provedores de fontes.</p>
         <p>Não há vídeos, mapas, botões de redes sociais incorporados ou outros serviços de terceiros embutidos nas páginas desta versão.</p>
       </section>
       <section className="reading-section" id="dados" aria-labelledby="dados-titulo">
@@ -51,7 +52,7 @@ export default function PrivacyPage() {
       </section>
       <section className="reading-section" id="direitos" aria-labelledby="direitos-titulo">
         <h2 id="direitos-titulo">Contato para questões de privacidade</h2>
-        <p>O canal destinado a dúvidas e solicitações relacionadas a dados pessoais ainda precisa ser definido e informado na <Link href="/contato/">página de contato</Link>. Esta versão não recebe solicitações por formulário.</p>
+        <p>O canal destinado a dúvidas e solicitações relacionadas a dados pessoais ainda precisa ser definido e informado na <Link prefetch={false} href="/contato/">página de contato</Link>. Esta versão não recebe solicitações por formulário.</p>
         <p>O responsável deverá esclarecer como receber e responder às solicitações aplicáveis ao tratamento efetivamente realizado. Não envie informações pessoais ou de saúde em espaços públicos para tentar entrar em contato.</p>
       </section>
       <section className="reading-section" id="revisao" aria-labelledby="revisao-titulo">

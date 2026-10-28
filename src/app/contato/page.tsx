@@ -1,14 +1,16 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { InteriorPage } from "@/components/interior-page";
 import { EditorialNote } from "@/components/editorial-note";
 import { Arrow } from "@/components/arrow";
 import { contact, whatsappHref } from "@/lib/contact";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Contato",
   description: "Consulte as informações e a situação dos canais profissionais de Eduardo Villela Tumani, psicólogo — CRP 06/127526. Dados de contato aguardam confirmação.",
-};
+  path: "/contato/",
+  indexable: Boolean(contact.professionalChannel || contact.whatsapp || contact.email),
+});
 
 export default function ContactPage() {
   const whatsapp = whatsappHref(contact.whatsapp);
@@ -52,7 +54,7 @@ export default function ContactPage() {
       <section className="reading-section" id="primeiro-contato" aria-labelledby="contato-titulo">
         <h2 id="contato-titulo">Cuidado com as informações desde o início</h2>
         <p>Quando um canal estiver disponível, o primeiro contato poderá ser utilizado para solicitar informações gerais e esclarecer o funcionamento do trabalho. Evite enviar relatos clínicos detalhados, resultados de testes ou documentos sensíveis em uma mensagem inicial.</p>
-        <p>Este site não possui formulário de contato e não recebe mensagens por esta página. As informações sobre o funcionamento atual estão na <Link href="/privacidade/">Política de Privacidade</Link>.</p>
+        <p>Este site não possui formulário de contato e não recebe mensagens por esta página. As informações sobre o funcionamento atual estão na <Link prefetch={false} href="/privacidade/">Política de Privacidade</Link>.</p>
         <div className="care-note"><h3>Precisa de ajuda imediata?</h3><p>Este site não oferece atendimento de urgência ou emergência. Em uma situação de risco imediato, procure um serviço de urgência da sua região.</p></div>
       </section>
     </InteriorPage>

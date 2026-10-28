@@ -45,5 +45,5 @@ O build gera o diretório `out/`, pronto para hospedagem estática. O preview
 utiliza a porta 3000 por padrão; encerre o servidor de desenvolvimento antes de
 iniciá-lo ou informe outra porta com `npm run preview -- --listen 4173`.
 
-As instruções de testes, arquitetura, publicação no Cloudflare Pages e os itens
+As instruções de testes, arquitetura, publicação estática na Hostinger e os itens
 pendentes estão em [Desenvolvimento e publicação](docs/DESENVOLVIMENTO.md).
