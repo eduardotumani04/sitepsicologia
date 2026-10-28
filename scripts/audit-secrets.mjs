@@ -28,7 +28,8 @@ function findings(buffer) {
 
 const matches = [];
 let files = 0;
-const workingFiles = git(["ls-files", "--cached", "--others", "--exclude-standard", "-z"]).toString().split("\0").filter(Boolean);
+const deletedFiles = new Set(git(["ls-files", "--deleted", "-z"]).toString().split("\0").filter(Boolean));
+const workingFiles = git(["ls-files", "--cached", "--others", "--exclude-standard", "-z"]).toString().split("\0").filter(file => file && !deletedFiles.has(file));
 for (const file of workingFiles) {
   const found = findings(await readFile(file));
   files++;

@@ -1,9 +1,9 @@
 import { pageMetadata } from "@/lib/seo";
 import { InteriorPage } from "@/components/interior-page";
-import { ArticleCard } from "@/components/article-card";
-import { EditorialNote } from "@/components/editorial-note";
-import { articles } from "@/lib/articles";
-import { articleCategories } from "@/content/article-types";
+import { ArticleCard } from "../../components/article-card";
+import { EditorialNote } from "../../components/editorial-note";
+import { articles } from "../../lib/articles";
+import { articleCategories } from "../../content/article-types";
 
 const published = articles.filter(article => article.status === "published");
 const drafts = articles.filter(article => article.status === "draft");

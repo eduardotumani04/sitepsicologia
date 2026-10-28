@@ -1,5 +1,8 @@
 # Auditoria técnica — 28/10/2026
 
+Registro da auditoria anterior ao refinamento da primeira versão pública.
+O escopo atual de seis páginas e as pendências estão em [PUBLICACAO.md](PUBLICACAO.md).
+
 Branch: `feat/site-institucional`. Design, paleta e CSS global preservados.
 Não houve publicação, merge na `main` ou acesso à conta real da Hostinger.
 

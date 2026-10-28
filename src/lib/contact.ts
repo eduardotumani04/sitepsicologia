@@ -14,6 +14,8 @@ export const contact: ContactInformation = {
   modality: null,
 };
 
+export const hasContactChannel = Boolean(contact.professionalChannel || contact.whatsapp || contact.email);
+
 export function whatsappHref(number: string | null): string | null {
   if (!number) return null;
   if (!/^\+[1-9]\d{7,14}$/.test(number)) {

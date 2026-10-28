@@ -1,74 +1,67 @@
 # Conteúdo e revisão editorial
 
-As páginas internas foram desenvolvidas sobre a estrutura existente. A página
-inicial foi preservada. Dados ainda não confirmados aparecem em notas editoriais;
-nenhum canal pendente é apresentado como link funcional.
+## Versão pública inicial
 
-## Artigos locais
+A primeira versão tem seis páginas institucionais, sem artigos ou seção de
+Conteúdos. Notas internas de formação, serviços e contato foram retiradas das
+páginas e registradas em `PUBLICACAO.md`. Nenhuma informação desconhecida foi
+inventada. O README original e os textos editoriais desenvolvidos foram preservados.
 
-Cada artigo fica em `src/content/articles/`, em um arquivo TypeScript. Os tipos
-estão em `src/content/article-types.ts`; o registro dos artigos está em
-`src/lib/articles.ts`. Não é necessário CMS, banco de dados, MDX ou API.
+## Acervo fora das rotas
 
-Campos comuns:
+Tudo fica em `workbench/editorial/`, que não é copiado para `out/`:
 
-- `slug`: identificador único da URL, sem espaços, acentos ou barras.
-- `title` e `summary`: título e resumo exibidos na listagem e no artigo.
-- `category`: uma chave de `articleCategories`.
-- `createdAt`: data real de criação editorial, no formato `AAAA-MM-DD`.
-- `sections`: seções com `id` único, `title`, `paragraphs` e, opcionalmente, `list`.
-- `references`: opcional; somente fontes verificadas, com título e URL HTTPS.
+- `content/articles/`: os dois rascunhos integrais em arquivos TypeScript.
+- `content/article-types.ts`: categorias e tipos de rascunho/artigo publicado.
+- `lib/articles.ts`: registro, consulta e formatação de datas.
+- `routes/conteudos/`: listagem e modelo completo de artigo estático arquivados.
+- `components/`: cards, notas editoriais e a seção de conhecimento da inicial.
 
-Um rascunho usa `status: "draft"` e `editorialNotes`, sem `publishedAt`.
-O modelo exibe aviso de revisão pendente e data de criação, sem atribuir
-aprovação profissional ou publicação definitiva. As rotas de rascunhos recebem
-`noindex, nofollow`. Essa indicação para buscadores não restringe acesso:
-os rascunhos fazem parte da versão estática de revisão.
+Lint e TypeScript verificam também o acervo. Não existem importações dele no
+código público. O build limpa `out/` e o postbuild rejeita diretórios de artigos
+ou workbench exportados. Os testes verificam ausência dos textos nos recursos,
+links e sitemap, além de HTTP 404 nas URLs antigas.
 
-Para adicionar um artigo, crie o arquivo, importe-o e acrescente-o ao registro
-em `src/lib/articles.ts`. A listagem e `generateStaticParams` utilizam esse
-registro para gerar `/conteudos/<slug>/index.html` durante o build. Links
-internos, datas e categorias são apresentados pelos componentes existentes.
+## Reativação futura, sujeita a nova aprovação
 
-Antes de publicar um artigo:
+1. Revisar os textos, precisão conceitual, autoria e referências verificáveis.
+2. Manter `status: "draft"` no material não aprovado, sem `publishedAt` fictício.
+   Para artigos aprovados, usar `status: "published"` e a data real de publicação.
+3. Criar um registro público contendo **somente artigos aprovados**, separado
+   do registro de rascunhos. Não exportar o acervo completo por conveniência.
+4. Restaurar as rotas arquivadas em `src/app/conteudos`, ajustando as importações.
+   Listagem, `generateStaticParams`, consulta de slug e metadados devem consumir
+   somente o registro público; `dynamicParams=false` continua necessário.
+5. Revisar os links de navegação e o sitemap para os artigos efetivamente
+   publicados. Recolocar a seção da inicial apenas se aprovada.
+6. Atualizar a privacidade, os testes e a documentação. Fazer build limpo e
+   revisão visual antes de publicar. Não basta adicionar `noindex` a rascunhos.
 
-1. Revisar conteúdo, precisão conceitual, linguagem, limites e referências.
-2. Confirmar autoria e aprovação profissional com Eduardo Villela Tumani.
-3. Alterar o status para `published`, retirar `editorialNotes` e informar uma
-   data real em `publishedAt`. O tipo exige a data para artigos publicados.
-4. Executar lint, build e testes; atualizar os cenários de teste caso altere
-   o conjunto editorial aprovado.
-5. Revisar a exportação e aprovar a publicação da versão do site.
+Os estilos existentes dos componentes editoriais continuam preservados no tema.
+Não é necessário CMS, banco de dados, API ou nova dependência para reativação.
 
-Para retirar um rascunho da exportação, remova-o do registro de artigos antes
-do build. Os dois exemplos atuais são rascunhos, sem referências demonstrativas
-ou artigos finais aprovados.
+## Dados profissionais e canais
 
-## Canais de contato
+`src/lib/contact.ts` mantém canal principal, WhatsApp, e-mail e modalidade como
+`null` até confirmação. Canal principal requer rótulo e URL HTTPS; WhatsApp usa
+formato internacional com `+`, código do país e número. Não há mensagem clínica
+pré-preenchida. E-mail recebe `mailto:` apenas quando informado.
 
-Os campos ficam em `src/lib/contact.ts`. Permanecem `null` até confirmação:
-canal principal, WhatsApp, e-mail e modalidade de atendimento.
+O cabeçalho e as chamadas finais não prometem contato sem canal. A página Contato
+informa a indisponibilidade de forma objetiva e exibe somente dados preenchidos.
+Ao habilitar canais, revisar a Política de Privacidade e os cenários de teste.
 
-O canal principal exige rótulo e URL HTTPS. O WhatsApp exige formato
-internacional com `+`, código do país e número, sem espaços ou pontuação.
-O link utiliza somente o número e não inclui mensagem clínica pré-preenchida.
-O e-mail é convertido em link `mailto:` apenas quando preenchido.
+Formação original mantida no README, mas retirada da apresentação enquanto sua
+redação e situação atual estiverem em revisão:
 
-Preencher um canal altera o funcionamento descrito na Política de Privacidade.
-Revisar a política e os testes junto com essa alteração. Não há formulário nem
-coleta de informações clínicas implementados no site.
+- Psicologia — Universidade Mackenzie.
+- Terapia Analítico-Comportamental — PUC Paraná.
+- Avaliação Psicológica — PUC Campinas.
+- Neurociências — Faculdade Sírio Libanês, informada como em andamento.
 
-## Informações que precisam de confirmação
+As especializações confirmadas em Terapia Analítico-Comportamental e Avaliação
+Psicológica permanecem nas páginas. Datas, biografia adicional, atendimento e
+finalidades específicas não são anunciados sem confirmação.
 
-- Denominação oficial dos cursos e instituições já informados no README e
-  situação atual da formação em Neurociências.
-- Fotografia autorizada e eventuais informações biográficas adicionais.
-- Modalidades de atendimento, público atendido, localização e disponibilidade.
-- Finalidades específicas de Avaliação Psicológica efetivamente oferecidas.
-- Canal principal, WhatsApp, e-mail e canal para questões de privacidade.
-- Responsabilidades sobre dados, configuração real da hospedagem, eventuais
-  registros de acesso, finalidades e prazos aplicáveis antes da publicação.
-- Aprovação dos textos institucionais e dos artigos, com referências conferidas
-  quando utilizadas, e versão final da Política de Privacidade.
-
-Esta etapa não publica o site nem faz merge na `main`.
+Veja `PUBLICACAO.md` para as pendências e `IMAGENS.md` para fotografias e direitos.
+Esta etapa não publica o site nem integra mudanças à `main`.

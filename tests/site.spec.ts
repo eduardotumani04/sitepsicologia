@@ -1,15 +1,16 @@
 import { expect, test } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
-import { readFile } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
 import { join } from "node:path";
 import { createSeoSettings, pageMetadata, siteRobots, siteSitemap } from "../src/lib/seo";
+import { articles } from "../workbench/editorial/lib/articles";
 
 declare global {
   interface Window { __auditCls: number; }
 }
 
-const articleRoutes = ["/conteudos/comportamento-e-contexto/", "/conteudos/conhecer-a-psicoterapia/"];
-const routes = ["/", "/sobre/", "/psicoterapia/", "/avaliacao-psicologica/", "/conteudos/", "/contato/", "/privacidade/", ...articleRoutes];
+const disabledRoutes = ["/conteudos/", ...articles.map(article => `/conteudos/${article.slug}/`)];
+const routes = ["/", "/sobre/", "/psicoterapia/", "/avaliacao-psicologica/", "/contato/", "/privacidade/"];
 
 for (const route of routes) {
   test(`exportação, metadados e acessibilidade: ${route}`, async ({ page }) => {
@@ -98,7 +99,7 @@ test("sitemap e robots são exportados e excluem conteúdos sem aprovação", as
     expect(await robots.text()).toContain("Sitemap:");
     for (const url of parsed.urls) {
       const path = new URL(url).pathname;
-      expect(articleRoutes).not.toContain(path);
+      expect(path).not.toMatch(/^\/conteudos(?:\/|$)/);
       expect(["/privacidade/", "/contato/"]).not.toContain(path);
       expect((await request.get(path)).status()).toBe(200);
     }
@@ -128,10 +129,6 @@ test("dados estruturados descrevem somente a identidade profissional verificáve
   const data = JSON.parse(await page.locator('script[type="application/ld+json"]').innerText());
   expect(data).toMatchObject({ "@type": "Person", name: "Eduardo Villela Tumani", jobTitle: "Psicólogo", identifier: { propertyID: "CRP", value: "06/127526" } });
   for (const key of ["address", "location", "geo", "aggregateRating", "review", "telephone"]) expect(data).not.toHaveProperty(key);
-  for (const route of articleRoutes) {
-    await page.goto(route);
-    await expect(page.locator('script[type="application/ld+json"]')).toHaveCount(0);
-  }
 });
 
 test("menu fecha ao sair por Tab e ao mudar para desktop, com foco visível", async ({ page }) => {
@@ -284,21 +281,32 @@ test("Apache aplica segurança, cache e página 404 da configuração Hostinger"
   expect((await request.get("/.htaccess")).status()).toBe(403);
 });
 
-test("rascunhos têm status, data de criação e leitura completa sem indexação", async ({ page }) => {
-  await page.goto("/conteudos/");
-  await expect(page.locator(".article-card")).toHaveCount(2);
-  await expect(page.getByText("Ainda não há artigos definitivos publicados.", { exact: false })).toBeVisible();
-  await expect(page.locator(".article-card time")).toHaveCount(2);
-  const href = await page.locator(".article-card").first().getAttribute("href");
-  await page.locator(".article-card").first().click();
-  await expect(page).toHaveURL(new RegExp(`${href}$`));
-  await expect(page.getByRole("complementary", { name: "Rascunho editorial — não aprovado para publicação" })).toBeVisible();
-  await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);
-  await expect(page.locator(".article-byline")).toContainText("Rascunho criado em");
-  await expect(page.locator(".article-byline")).not.toContainText("Publicado em");
-  await expect(page.getByRole("navigation", { name: "Navegação principal", exact: true }).getByRole("link", { name: "Conteúdos", exact: true })).toHaveAttribute("aria-current", "page");
-  await page.getByRole("link", { name: "Voltar aos conteúdos", exact: true }).click();
-  await expect(page).toHaveURL(/\/conteudos\/$/);
+test("Conteúdos e rascunhos ficam fora das rotas, recursos e links públicos", async ({ page, request }) => {
+  const files = await readdir("out", { recursive: true });
+  expect(files.some(file => /(?:^|[\\/])(?:conteudos|workbench)(?:[\\/]|$)/.test(file))).toBe(false);
+  for (const file of files.filter(file => /\.(html|txt|js|json|xml)$/.test(file))) {
+    const content = await readFile(join("out", file), "utf8");
+    for (const article of articles) {
+      expect(content, file).not.toContain(article.slug);
+      expect(content, file).not.toContain(article.sections[0].paragraphs[0]);
+    }
+  }
+  for (const route of [...disabledRoutes, "/conteudos/index.html", "/conteudos/index.txt", "/workbench/editorial/", "/conteudos/artigo-inexistente/"]) {
+    expect((await request.get(route)).status(), route).toBe(404);
+  }
+  for (const route of routes) {
+    await page.goto(route);
+    await expect(page.locator('a[href*="/conteudos"]')).toHaveCount(0);
+    await expect(page.getByRole("link", { name: "Conteúdos", exact: true })).toHaveCount(0);
+    await expect(page.locator(".knowledge-section, .editorial-note, .pending-label, .status-tag")).toHaveCount(0);
+    expect(await page.locator("body").innerText()).not.toMatch(/a confirmar|em desenvolvimento|em preparação|em construção|revisão editorial|rascunho|retrato a ser adicionado/i);
+    await expect(page.locator('a[href^="mailto:"], a[href*="wa.me"]')).toHaveCount(0);
+    await expect(page.getByRole("link", { name: /vamos conversar|ir para contato|agend[ae]/i })).toHaveCount(0);
+    for (const action of await page.locator(".contact-invitation .button").all()) {
+      expect(await action.getAttribute("href"), route).not.toBe(route);
+    }
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);
+  }
 });
 
 test("índice de leitura e perguntas frequentes funcionam por teclado", async ({ page }) => {
@@ -318,10 +326,11 @@ test("índice de leitura e perguntas frequentes funcionam por teclado", async ({
 
 test("contato não publica canais não confirmados e rotas inexistentes retornam 404", async ({ page, request }) => {
   await page.goto("/contato/");
-  await expect(page.locator(".contact-channel")).toHaveCount(3);
+  await expect(page.locator(".contact-channel")).toHaveCount(0);
   await expect(page.locator(".contact-channel a")).toHaveCount(0);
   await expect(page.locator('a[href^="mailto:"], a[href*="wa.me"], form, input, textarea')).toHaveCount(0);
-  await expect(page.locator(".contact-modality")).toContainText("confirmar");
+  await expect(page.locator("#atendimento")).toHaveCount(0);
+  await expect(page.getByText("Não há canais de contato disponíveis neste site no momento.", { exact: false })).toBeVisible();
   const missing = await request.get("/conteudos/artigo-inexistente/");
   expect(missing.status()).toBe(404);
 });
@@ -346,7 +355,7 @@ test("menu móvel funciona por teclado, fecha com Escape e navega", async ({ pag
   await navigation.getByRole("link", { name: /Contato/ }).click();
   await expect(page).toHaveURL(/\/contato\//);
   await expect(navigation).toBeHidden();
-  await expect(page.getByText("Canais em preparação", { exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Canais profissionais", exact: true })).toBeVisible();
 });
 
 test("atalho de teclado permite pular a navegação", async ({ page }) => {
@@ -377,9 +386,17 @@ test("recursos locais, imagens válidas e ausência de rastreamento", async ({ p
   page.on("request", (request) => origins.add(new URL(request.url()).origin));
   await page.goto("/");
   await page.evaluate(() => document.fonts.ready);
-  const image = page.getByRole("img");
-  await expect(image).toBeVisible();
-  expect(await image.evaluate((element) => (element as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
+  for (const route of routes) {
+    await page.goto(route);
+    for (const image of await page.locator("img").all()) {
+      await image.scrollIntoViewIfNeeded();
+      await expect(image).toBeVisible();
+      await expect(image).toHaveAttribute("alt", /.+/);
+      await expect.poll(() => image.evaluate(element => (element as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
+      expect(Number(await image.getAttribute("width"))).toBeGreaterThan(0);
+      expect(Number(await image.getAttribute("height"))).toBeGreaterThan(0);
+    }
+  }
   expect(errors).toEqual([]);
   expect([...origins]).toEqual([new URL(page.url()).origin]);
   expect(await context.cookies()).toEqual([]);

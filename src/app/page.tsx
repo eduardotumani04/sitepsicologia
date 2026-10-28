@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Arrow } from "@/components/arrow";
 import { ContactInvitation } from "@/components/contact-invitation";
 import { SectionLabel } from "@/components/section-label";
+import { EditorialImage } from "@/components/editorial-image";
 import { StructuredData } from "@/components/structured-data";
 
 export default function Home() {
@@ -23,9 +24,9 @@ export default function Home() {
           <figure className="hero-portrait">
             <div className="portrait-image">
               {/* eslint-disable-next-line @next/next/no-img-element -- SVG local de 1 KB: não há redimensionamento a otimizar; dispensa o JavaScript do componente Image. */}
-              <img src="/images/espaco-retrato.svg" alt="Composição abstrata em tons naturais. Espaço reservado para uma fotografia profissional de Eduardo Villela Tumani, ainda não fornecida." width={720} height={900} loading="eager" decoding="async" fetchPriority="high" />
+              <img src="/images/espaco-retrato.svg" alt="Composição abstrata em tons naturais." width={720} height={900} loading="eager" decoding="async" fetchPriority="high" />
               <span className="portrait-top-label">Presença. Escuta. Contexto.</span>
-              <div className="portrait-placeholder-label"><span className="portrait-monogram" aria-hidden="true">ev<span>t.</span></span><p>Espaço para fotografia profissional<span>Retrato a ser adicionado</span></p></div>
+              <div className="portrait-placeholder-label"><span className="portrait-monogram" aria-hidden="true">ev<span>t.</span></span></div>
             </div>
             <figcaption><span>O cuidado começa na escuta.</span><span aria-hidden="true">01 / 01</span></figcaption>
           </figure>
@@ -47,12 +48,13 @@ export default function Home() {
           <div>
             <SectionLabel number="01">Sobre mim</SectionLabel>
             <h2 id="about-heading" className="section-heading">Antes de tudo,<br />um encontro entre<br /><em>pessoas.</em></h2>
+            <EditorialImage position="inicio" />
           </div>
           <div className="about-copy">
-            <p className="lead">Sou Eduardo Villela Tumani, psicólogo. Meu trabalho parte de uma pergunta: como compreender cada pessoa a partir da sua história e do contexto em que vive?</p>
-            <p>Com uma atuação fundamentada na ciência do comportamento, busco construir um espaço de escuta, investigação e respeito. Um processo que considera tanto o que você sente quanto as relações e experiências que fazem parte da sua vida.</p>
+            <p className="lead">Sou Eduardo Villela Tumani, psicólogo. Meu trabalho considera a história, as relações e o contexto de cada pessoa.</p>
+            <p>A ciência do comportamento orienta uma prática de escuta e investigação, com respeito ao que você vive e sente.</p>
             <div className="specialties" aria-label="Especializações"><span>Terapia Analítico-Comportamental</span><span>Avaliação Psicológica</span></div>
-            <Link prefetch={false} className="text-link" href="/sobre/">Conheça minha trajetória <Arrow direction="diagonal" /></Link>
+            <Link prefetch={false} className="text-link" href="/sobre/">Conheça minha atuação <Arrow direction="diagonal" /></Link>
           </div>
         </div>
       </section>
@@ -67,13 +69,13 @@ export default function Home() {
             <Link prefetch={false} className="service-card" href="/psicoterapia/" aria-labelledby="therapy-title therapy-link">
               <div className="service-card-top"><span className="service-number" aria-hidden="true">01 /</span><span className="service-arrow"><Arrow direction="diagonal" /></span></div>
               <h3 id="therapy-title">Psicoterapia</h3>
-              <p>Um espaço para compreender sentimentos, comportamentos e relações. Olhar para a sua história e investigar, em conjunto, outras formas de lidar com o que você vive.</p>
+              <p>Um espaço para compreender sentimentos, comportamentos e relações, investigando outras formas de lidar com o que você vive.</p>
               <span className="service-link" id="therapy-link">Conheça o processo <Arrow /></span>
             </Link>
             <Link prefetch={false} className="service-card" href="/avaliacao-psicologica/" aria-labelledby="assessment-title assessment-link">
               <div className="service-card-top"><span className="service-number" aria-hidden="true">02 /</span><span className="service-arrow"><Arrow direction="diagonal" /></span></div>
               <h3 id="assessment-title">Avaliação Psicológica</h3>
-              <p>Um processo estruturado de investigação de aspectos psicológicos, que reúne diferentes fontes de informação para responder a uma demanda específica, com rigor técnico e ético.</p>
+              <p>Uma investigação que integra diferentes fontes de informação para responder a uma demanda específica, com rigor técnico e ético.</p>
               <span className="service-link" id="assessment-link">Entenda a avaliação <Arrow /></span>
             </Link>
           </div>
@@ -91,32 +93,12 @@ export default function Home() {
             <SectionLabel number="03">Minha abordagem</SectionLabel>
             <h2 className="section-heading" id="approach-heading">Ninguém existe<br /><em>fora de uma história.</em></h2>
             <p>A Terapia Analítico-Comportamental busca compreender como o que fazemos, pensamos e sentimos se relaciona com nossas experiências e com o ambiente em que vivemos.</p>
-            <p>Por meio da análise funcional, investigamos o que acontece antes e depois de um comportamento, em quais situações ele aparece e qual papel desempenha na vida da pessoa. A história de aprendizagem ajuda a entender como esses padrões se construíram.</p>
-            <p>Em vez de olhar para um comportamento de forma isolada, olhamos para suas relações. Essa compreensão orienta um trabalho construído em conjunto, com objetivos que façam sentido para você.</p>
+            <p>A análise funcional investiga em quais situações um comportamento aparece e o que acontece antes e depois dele. Junto à história de aprendizagem, ajuda a compreender o papel desses padrões na vida da pessoa.</p>
             <Link prefetch={false} className="text-link" href="/psicoterapia/">Saiba mais sobre a psicoterapia <Arrow direction="diagonal" /></Link>
           </div>
         </div>
       </section>
 
-      <section className="knowledge-section section-space" aria-labelledby="knowledge-heading">
-        <div className="container knowledge-grid">
-          <div>
-            <SectionLabel number="04">Conhecimento que aproxima</SectionLabel>
-            <h2 className="section-heading" id="knowledge-heading">Ciência também<br />é uma forma de<br /><em>abrir conversas.</em></h2>
-            <p>Um espaço em construção para compartilhar conhecimento sobre Psicologia, comportamento humano e neurociências. Informação acessível, com cuidado e compromisso com a ciência.</p>
-            <Link prefetch={false} className="text-link" href="/conteudos/">Conheça o espaço de conteúdos <Arrow direction="diagonal" /></Link>
-          </div>
-          <div className="knowledge-topics">
-            <p className="small-label knowledge-status"><span aria-hidden="true" /> Temas que estarão por aqui</p>
-            {[
-              ["01", "Psicologia", "Reflexões sobre cuidado e saúde mental."],
-              ["02", "Comportamento humano", "Um olhar para as relações do dia a dia."],
-              ["03", "Neurociências", "Conhecimento para ampliar a compreensão."],
-            ].map(([number, title, text]) => <div className="topic" key={number}><span className="topic-number" aria-hidden="true">{number}</span><div><h3>{title}</h3><p>{text}</p></div></div>)}
-            <p className="content-note">Os primeiros conteúdos serão publicados em uma próxima etapa.</p>
-          </div>
-        </div>
-      </section>
       <ContactInvitation />
     </>
   );

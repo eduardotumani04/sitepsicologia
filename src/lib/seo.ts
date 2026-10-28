@@ -1,6 +1,5 @@
 import type { Metadata, MetadataRoute } from "next";
 import { site } from "./site";
-import { articles } from "./articles";
 import { contact } from "./contact";
 
 export function createSeoSettings(values: { SITE_URL?: string; SITE_INDEXING_ENABLED?: string }) {
@@ -62,18 +61,13 @@ export function siteRobots(settings: SeoSettings = seoSettings): MetadataRoute.R
   if (!settings.indexingEnabled || !settings.url) {
     return { rules: { userAgent: "*", disallow: "/" } };
   }
-  // Rascunhos não entram no sitemap, mas precisam ser rastreáveis para o noindex ser lido.
+  // Somente páginas públicas; o acervo editorial não participa da exportação.
   return { rules: { userAgent: "*", allow: "/" }, sitemap: `${settings.url}/sitemap.xml` };
 }
 
 export function siteSitemap(settings: SeoSettings = seoSettings): MetadataRoute.Sitemap {
   if (!settings.url || !settings.indexingEnabled) return [];
-  const published = articles.filter(article => article.status === "published");
   const paths = ["/", "/sobre/", "/psicoterapia/", "/avaliacao-psicologica/"];
   if (contact.professionalChannel || contact.whatsapp || contact.email) paths.push("/contato/");
-  if (published.length) paths.push("/conteudos/");
-  return [
-    ...paths.map(path => ({ url: new URL(path, `${settings.url}/`).href })),
-    ...published.map(article => ({ url: `${settings.url}/conteudos/${article.slug}/`, lastModified: article.publishedAt })),
-  ];
+  return paths.map(path => ({ url: new URL(path, `${settings.url}/`).href }));
 }

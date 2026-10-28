@@ -11,5 +11,4 @@ export const navigation = [
   { href: "/sobre/", label: "Sobre mim" },
   { href: "/psicoterapia/", label: "Psicoterapia" },
   { href: "/avaliacao-psicologica/", label: "Avaliação Psicológica" },
-  { href: "/conteudos/", label: "Conteúdos" },
 ];

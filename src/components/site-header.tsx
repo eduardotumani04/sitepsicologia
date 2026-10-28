@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { navigation, site } from "@/lib/site";
+import { hasContactChannel } from "@/lib/contact";
 import { Arrow } from "./arrow";
 
 export function SiteHeader() {
@@ -61,7 +62,7 @@ export function SiteHeader() {
             <Link prefetch={false} key={href} href={href} aria-current={isActive(href) ? "page" : undefined}>{label}</Link>
           ))}
         </nav>
-        <Link prefetch={false} href="/contato/" className="header-contact">Vamos conversar <Arrow direction="diagonal" /></Link>
+        <Link prefetch={false} href="/contato/" className="header-contact">{hasContactChannel ? "Vamos conversar" : "Contato"} <Arrow direction="diagonal" /></Link>
         <button
           type="button"
           className="menu-toggle"

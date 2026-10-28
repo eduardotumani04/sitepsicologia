@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { articleCategories } from "@/content/article-types";
-import { articles, articleDate, formatArticleDate, getArticle } from "@/lib/articles";
+import { articleCategories } from "../../../content/article-types";
+import { articles, articleDate, formatArticleDate, getArticle } from "../../../lib/articles";
 import { site } from "@/lib/site";
 import { pageMetadata } from "@/lib/seo";
 import { InteriorPage } from "@/components/interior-page";
-import { EditorialNote } from "@/components/editorial-note";
+import { EditorialNote } from "../../../components/editorial-note";
 import { Arrow } from "@/components/arrow";
 
 type Props = { params: Promise<{ slug: string }> };

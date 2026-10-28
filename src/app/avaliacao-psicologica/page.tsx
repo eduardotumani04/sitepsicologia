@@ -1,7 +1,6 @@
 import { pageMetadata } from "@/lib/seo";
 import { InteriorPage } from "@/components/interior-page";
 import { ContactInvitation } from "@/components/contact-invitation";
-import { EditorialNote } from "@/components/editorial-note";
 import { RelatedPages } from "@/components/related-pages";
 
 export const metadata = pageMetadata({
@@ -30,7 +29,7 @@ export default function AssessmentPage() {
         <section id="o-que-e" className="reading-section" aria-labelledby="avaliacao-titulo">
           <h2 id="avaliacao-titulo">O que é Avaliação Psicológica?</h2>
           <p>A Avaliação Psicológica é um processo de investigação orientado por uma questão e por uma finalidade. Ela busca compreender características e processos psicológicos relevantes para aquela demanda, considerando as condições em que as informações foram produzidas.</p>
-          <p>Esse trabalho reúne planejamento, escolha de procedimentos, análise integrada e comunicação dos resultados. A aplicação de um instrumento pode fazer parte do percurso, mas um teste isolado não representa, por si só, todo o processo de avaliação.</p>
+          <p>O trabalho reúne planejamento, escolha de procedimentos, análise integrada e comunicação dos resultados. Um teste pode fazer parte do percurso, mas não representa, isoladamente, toda a avaliação.</p>
         </section>
         <section id="diferencas" className="reading-section" aria-labelledby="diferencas-titulo">
           <h2 id="diferencas-titulo">Como se diferencia da psicoterapia?</h2>
@@ -49,7 +48,7 @@ export default function AssessmentPage() {
             <li><strong>Instrumentos psicológicos:</strong> recursos selecionados por sua adequação à finalidade, ao contexto e às exigências técnicas e profissionais aplicáveis.</li>
             <li><strong>Outras fontes pertinentes:</strong> informações e documentos relevantes, quando sua utilização for apropriada e respeitar as condições éticas e legais.</li>
           </ul>
-          <p>As informações precisam ser relacionadas entre si. Um resultado numérico, uma resposta ou uma observação isolada não deve ser tomado como uma explicação completa sobre a pessoa.</p>
+          <p>As informações são analisadas em conjunto. Um número, uma resposta ou uma observação isolada não explica a pessoa por completo.</p>
         </section>
         <section id="processo" className="reading-section" aria-labelledby="construcao-titulo">
           <h2 id="construcao-titulo">Um percurso definido pela demanda</h2>
@@ -64,11 +63,10 @@ export default function AssessmentPage() {
           <h2 id="responsabilidade-titulo">Responsabilidade técnica, científica e ética</h2>
           <p>Uma avaliação exige fundamentação científica, uso criterioso de procedimentos e atenção às condições em que as informações são obtidas. Reconhecer limitações e incertezas faz parte de uma análise responsável.</p>
           <p>O respeito à dignidade, ao sigilo e à finalidade do trabalho deve orientar a coleta, a guarda e a comunicação das informações. A linguagem utilizada também precisa evitar conclusões que ultrapassem o que o processo permite compreender.</p>
-          <EditorialNote><p>Confirmar quais finalidades de Avaliação Psicológica são efetivamente oferecidas, público atendido e condições de atendimento. Esta página explica o processo em termos gerais e não anuncia avaliações específicas ainda não confirmadas.</p></EditorialNote>
         </section>
         <RelatedPages pages={[
           { href: "/psicoterapia/", title: "Psicoterapia", description: "Saiba como se constrói um acompanhamento terapêutico." },
-          { href: "/contato/", title: "Informações de contato", description: "Consulte a situação dos canais profissionais." },
+          { href: "/contato/", title: "Informações de contato", description: "Consulte as informações profissionais disponíveis." },
         ]} />
       </InteriorPage>
       <ContactInvitation />

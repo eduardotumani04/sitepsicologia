@@ -27,8 +27,11 @@ npm run typecheck
 npm run build
 ```
 
-O build exporta as páginas para `out/`. Não use `next start`: esta aplicação é
-exportada, sem servidor Next.js em produção.
+O build limpa a exportação anterior e gera as seis páginas públicas em `out/`.
+O postbuild recusa diretórios `conteudos` ou `workbench` na exportação. Não use
+`next start`: esta aplicação é exportada, sem servidor Next.js em produção.
+Após remover rotas, `node scripts/next.mjs typegen` regenera os tipos do Next.js
+antes de um typecheck isolado, sem depender dos tipos antigos em `.next/`.
 
 Para inspecionar o resultado estático:
 
@@ -57,7 +60,7 @@ PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium npm run test:e2e
 ```
 
 Os testes usam o resultado de produção em `out/`, iniciam o servidor estático
-na porta 4173 e o encerram ao terminar. Cobrem as páginas institucionais e as rotas de artigos, metadados, links
+na porta 4173 e o encerram ao terminar. Cobrem as seis páginas públicas, ausência das rotas de artigos, metadados, links
 internos, menu móvel, acesso por teclado, ausência de rolagem horizontal de
 320 a 1440 pixels, recursos locais e regras automáticas de acessibilidade
 WCAG A/AA com axe-core. A verificação automática não substitui uma revisão
@@ -74,17 +77,15 @@ src/
     sobre/page.tsx
     psicoterapia/page.tsx
     avaliacao-psicologica/page.tsx
-    conteudos/page.tsx
-    conteudos/[slug]/page.tsx   Modelo estático de artigo
     contato/page.tsx
     privacidade/page.tsx
     not-found.tsx               Página 404
   components/                  Cabeçalho, rodapé e elementos compartilhados
-  content/                     Tipos e arquivos locais dos artigos
   lib/site.ts                  Identificação profissional e navegação
 public/
   icon.svg                     Ícone tipográfico do site
   images/espaco-retrato.svg     Composição local para o futuro retrato
+workbench/editorial/          Acervo, rotas e componentes editoriais arquivados
 tests/site.spec.ts             Testes funcionais e de acessibilidade
 ```
 
@@ -102,6 +103,9 @@ O SVG local de 1 KB usa imagem nativa com dimensões e prioridade explícitas;
 não há otimização em servidor ou JavaScript adicional do componente Next/Image.
 Fotografias futuras precisam ser preparadas em tamanhos e formatos adequados
 antes de sua inclusão. A imagem de compartilhamento PNG não é uma fotografia.
+Três posições locais estão preparadas e não renderizam blocos enquanto não houver
+fotografia autorizada. Nenhuma foto de terceiros foi incluída nesta entrega;
+origem, direitos e especificações pendentes estão em [IMAGENS.md](IMAGENS.md).
 
 ## SEO e domínio oficial
 
@@ -116,10 +120,10 @@ Execute um novo build. As variáveis também podem ser fornecidas pelo ambiente
 de build. Não são segredos e não exigem prefixo `NEXT_PUBLIC_`.
 
 Canonicals e Open Graph usam a origem oficial. O sitemap inclui somente páginas
-aptas à indexação e artigos publicados; exclui rascunhos, a política ainda em
-revisão e o contato enquanto não houver canal confirmado. Artigos em rascunho
-continuam com noindex mesmo após habilitar a indexação geral. Noindex e robots
-não restringem acesso a arquivos; não são autenticação.
+institucionais aptas à indexação; exclui a política enquanto sua revisão estiver
+pendente e o contato enquanto não houver canal confirmado. Não contém artigos.
+O acervo editorial não tem rotas nem recursos exportados, mesmo que a indexação
+seja habilitada. Noindex e robots não substituem a retirada de arquivos públicos.
 
 A imagem de compartilhamento local está em `public/opengraph.png`. Para
 regenerá-la com os dados de `src/lib/site.ts`, use Node.js 24 e execute
@@ -134,7 +138,10 @@ ou promessas nos dados estruturados.
 2. Envie **o conteúdo completo de `out/`** para o diretório público configurado
    na Hostinger, normalmente `public_html`. Inclua todos os `.htaccess` ocultos,
    subdiretórios e arquivos do Next.js. Não envie o repositório, `.env`,
-   `node_modules` ou `.next`. Não é necessário Node.js no servidor de hospedagem.
+   `node_modules`, `workbench` ou `.next`. Não é necessário Node.js no servidor.
+   Se houver uma exportação antiga, fazer backup e substituir todos os arquivos
+   dela, retirando diretórios de artigos e recursos obsoletos; apenas sobrepor
+   arquivos pode manter rascunhos públicos. Preservar outros sites e dados.
 3. Preserve os diretórios de cada rota. O projeto usa `output: 'export'`,
    `trailingSlash: true` e imagens sem otimização em servidor. Não configure
    um fallback de SPA que transforme qualquer URL inexistente em HTTP 200.
@@ -188,25 +195,23 @@ foco ao sair do menu e ao redimensionar, movimento reduzido e estabilidade visua
 O teste de estabilidade simula 200 ms no carregamento da fonte; o CLS medido é
 local e não constitui uma medição de usuários reais ou um resultado de Lighthouse.
 
-## Conteúdo e próxima etapa
+## Conteúdo, imagens e primeira publicação
 
-- As páginas institucionais têm conteúdo desenvolvido, com índices de leitura,
-  links relacionados e dados pendentes identificados para revisão editorial.
-  A página inicial foi preservada.
-- A formação foi preservada a partir das informações já existentes no README.
-- Substituir a composição abstrata pelo retrato profissional autorizado,
-  preferencialmente em WebP ou AVIF, mantendo dimensões e texto alternativo.
-- Confirmar telefone, e-mail e/ou canal de contato antes de habilitar links.
-  Não há botão inativo disfarçado de envio, nem formulário nesta versão.
-- Confirmar a trajetória e as informações de atendimento destacadas nas notas
-  editoriais antes da publicação.
-- Elaborar e revisar os conteúdos científicos antes de publicá-los.
-- Confirmar o domínio, habilitar a indexação somente após aprovação e revisar
-  a política de privacidade conforme o funcionamento real da hospedagem.
-- Revisar dados, textos e privacidade antes da divulgação pública.
+As seis páginas públicas preservam Manrope, paleta e componentes aprovados.
+A inicial foi sintetizada e a seção de divulgação científica retirada. Notas
+internas e blocos incompletos de formação/atendimento não aparecem no site.
+Contato não apresenta cartões vazios ou ações que prometam envio; seus canais
+só são habilitados com dados confirmados em `src/lib/contact.ts`.
 
-As mudanças devem ser revisadas na branch de funcionalidade antes de qualquer
-merge na `main`.
+O acervo completo foi movido para `workbench/editorial/`, fora de `src/app` e
+`public`. Nenhum componente público ou sitemap importa o registro de artigos.
+Os testes verificam 404 nas URLs antigas e ausência dos rascunhos nos recursos.
 
-Consulte [Conteúdo e revisão editorial](EDITORIAL.md) para manter os artigos
-locais, preencher contatos e conferir os pontos que dependem de confirmação.
+Consulte:
+
+- [PUBLICACAO.md](PUBLICACAO.md): decisões mínimas, visualização e envio seguro à Hostinger.
+- [IMAGENS.md](IMAGENS.md): direitos, fontes existentes e três fotografias pendentes.
+- [EDITORIAL.md](EDITORIAL.md): manutenção dos textos e reativação futura do acervo.
+
+Alterações devem ser revisadas na branch `feat/site-institucional` e no PR #1
+antes de qualquer merge na `main` ou publicação.

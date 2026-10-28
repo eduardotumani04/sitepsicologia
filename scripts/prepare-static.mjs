@@ -1,10 +1,17 @@
-import { readdir, readFile, writeFile, mkdir, copyFile } from "node:fs/promises";
+import { readdir, readFile, writeFile, mkdir, copyFile, access } from "node:fs/promises";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { contentSecurityPolicy } from "./security-policy.mjs";
 
 const root = fileURLToPath(new URL("../out/", import.meta.url));
 const documents = new Map();
+
+for (const directory of ["conteudos", "workbench"]) {
+  let exists = false;
+  try { await access(join(root, directory)); exists = true; }
+  catch (error) { if (error.code !== "ENOENT") throw error; }
+  if (exists) throw new Error(`Exportação interrompida: diretório não público em out/${directory}.`);
+}
 
 async function inspect(directory) {
   for (const entry of await readdir(directory, { withFileTypes: true })) {

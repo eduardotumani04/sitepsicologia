@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { articleCategories, type Article } from "@/content/article-types";
-import { articleDate, formatArticleDate } from "@/lib/articles";
-import { Arrow } from "./arrow";
+import { articleCategories, type Article } from "../content/article-types";
+import { articleDate, formatArticleDate } from "../lib/articles";
+import { Arrow } from "@/components/arrow";
 
 export function ArticleCard({ article }: { article: Article }) {
   const draft = article.status === "draft";

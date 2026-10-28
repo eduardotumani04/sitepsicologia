@@ -1,6 +1,6 @@
-import type { Article } from "@/content/article-types";
-import { comportamentoEContexto } from "@/content/articles/comportamento-e-contexto";
-import { conhecerAPsicoterapia } from "@/content/articles/conhecer-a-psicoterapia";
+import type { Article } from "../content/article-types";
+import { comportamentoEContexto } from "../content/articles/comportamento-e-contexto";
+import { conhecerAPsicoterapia } from "../content/articles/conhecer-a-psicoterapia";
 
 export const articles: readonly Article[] = [comportamentoEContexto, conhecerAPsicoterapia].sort((a, b) =>
   articleDate(b).localeCompare(articleDate(a)) || a.title.localeCompare(b.title, "pt-BR"),
