@@ -20,3 +20,30 @@ Desenvolver um site institucional responsivo, acessível e otimizado para mecani
 
 ## Desenvolvimento
 Projeto desenvolvido com auxílio do OpenAI Codex.
+
+## Executar o site
+
+O projeto está na raiz deste repositório e utiliza Next.js com App Router,
+TypeScript, Tailwind CSS e npm. Recomenda-se Node.js 24 (veja `.nvmrc`).
+
+```bash
+npm ci
+npm run dev
+```
+
+O servidor de desenvolvimento utiliza a porta 3000. Para verificar a versão de
+produção exportada:
+
+```bash
+npm run lint
+npm run typecheck
+npm run build
+npm run preview
+```
+
+O build gera o diretório `out/`, pronto para hospedagem estática. O preview
+utiliza a porta 3000 por padrão; encerre o servidor de desenvolvimento antes de
+iniciá-lo ou informe outra porta com `npm run preview -- --listen 4173`.
+
+As instruções de testes, arquitetura, publicação no Cloudflare Pages e os itens
+pendentes estão em [Desenvolvimento e publicação](docs/DESENVOLVIMENTO.md).
