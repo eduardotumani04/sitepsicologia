@@ -4,7 +4,7 @@
 
 - Node.js 24 recomendado, conforme `.nvmrc` (mínimo aceito pelo projeto: 22).
 - npm 10 ou superior. O `package-lock.json` deve ser versionado.
-- Nenhum banco de dados, chave de API, arquivo `.env` ou serviço externo é necessário.
+- Nenhum banco de dados, chave de API, arquivo `.env` ou serviço externo é necessário em tempo de execução. O download da fonte durante o build depende dos domínios descritos abaixo.
 
 Use a cópia existente do repositório. Em tarefas de nuvem, o ambiente já é
 isolado: não é necessário criar outro repositório, worktree ou subpasta de aplicação.
@@ -56,7 +56,7 @@ PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium npm run test:e2e
 ```
 
 Os testes usam o resultado de produção em `out/`, iniciam o servidor estático
-na porta 4173 e o encerram ao terminar. Cobrem as sete rotas, metadados, links
+na porta 4173 e o encerram ao terminar. Cobrem as páginas institucionais e as rotas de artigos, metadados, links
 internos, menu móvel, acesso por teclado, ausência de rolagem horizontal de
 320 a 1440 pixels, recursos locais e regras automáticas de acessibilidade
 WCAG A/AA com axe-core. A verificação automática não substitui uma revisão
@@ -74,10 +74,12 @@ src/
     psicoterapia/page.tsx
     avaliacao-psicologica/page.tsx
     conteudos/page.tsx
+    conteudos/[slug]/page.tsx   Modelo estático de artigo
     contato/page.tsx
     privacidade/page.tsx
     not-found.tsx               Página 404
   components/                  Cabeçalho, rodapé e elementos compartilhados
+  content/                     Tipos e arquivos locais dos artigos
   lib/site.ts                  Identificação profissional e navegação
 public/
   icon.svg                     Ícone tipográfico do site
@@ -117,15 +119,16 @@ Esta entrega prepara os arquivos; não publica o site nem configura domínio.
 
 ## Conteúdo e próxima etapa
 
-- A página inicial está completa. As páginas internas têm uma apresentação
-  inicial consistente e identificam o conteúdo que ainda está em preparação.
+- As páginas institucionais têm conteúdo desenvolvido, com índices de leitura,
+  links relacionados e dados pendentes identificados para revisão editorial.
+  A página inicial foi preservada.
 - A formação foi preservada a partir das informações já existentes no README.
 - Substituir a composição abstrata pelo retrato profissional autorizado,
   preferencialmente em WebP ou AVIF, mantendo dimensões e texto alternativo.
 - Confirmar telefone, e-mail e/ou canal de contato antes de habilitar links.
   Não há botão inativo disfarçado de envio, nem formulário nesta versão.
-- Completar a trajetória, as modalidades de atendimento e as informações
-  sobre os serviços com revisão profissional.
+- Confirmar a trajetória e as informações de atendimento destacadas nas notas
+  editoriais antes da publicação.
 - Elaborar e revisar os conteúdos científicos antes de publicá-los.
 - Confirmar domínio e hospedagem para configurar URLs canônicas, sitemap,
   imagem de compartilhamento e revisar a política de privacidade conforme
@@ -134,3 +137,6 @@ Esta entrega prepara os arquivos; não publica o site nem configura domínio.
 
 As mudanças devem ser revisadas na branch de funcionalidade antes de qualquer
 merge na `main`.
+
+Consulte [Conteúdo e revisão editorial](EDITORIAL.md) para manter os artigos
+locais, preencher contatos e conferir os pontos que dependem de confirmação.

@@ -32,7 +32,9 @@ export function SiteHeader() {
   }, [menuOpen]);
 
   function isActive(href: string) {
-    return pathname.replace(/\/$/, "") === href.replace(/\/$/, "");
+    const current = pathname.replace(/\/$/, "");
+    const target = href.replace(/\/$/, "");
+    return current === target || (target !== "" && current.startsWith(`${target}/`));
   }
 
   return (
