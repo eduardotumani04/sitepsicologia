@@ -3,6 +3,7 @@ import { InteriorPage } from "@/components/interior-page";
 import { ContactInvitation } from "@/components/contact-invitation";
 import { EditorialImage } from "@/components/editorial-image";
 import { RelatedPages } from "@/components/related-pages";
+import styles from "./sobre.module.css";
 
 export const metadata = pageMetadata({
   title: "Sobre mim",
@@ -12,7 +13,7 @@ export const metadata = pageMetadata({
 
 const sections = [
   { id: "apresentacao", title: "Minha atuação" },
-  { id: "especializacoes", title: "Especializações" },
+  { id: "formacao-academica", title: "Formação acadêmica" },
   { id: "ciencia-e-etica", title: "Ciência e ética" },
 ];
 
@@ -22,7 +23,7 @@ export default function AboutPage() {
       <InteriorPage
         eyebrow="Sobre mim"
         title="Ciência, escuta e compreensão."
-        intro="Sou Eduardo Villela Tumani, psicólogo — CRP 06/127526. Meu trabalho se orienta pela compreensão do comportamento e pelo respeito à singularidade de cada pessoa."
+        intro="Sou Eduardo Villela Tumani. Há mais de 15 anos, atuo como psicólogo nas áreas clínica, organizacional e social. Essa trajetória reforça minha compreensão de que cada pessoa precisa ser considerada em sua história de aprendizagem, nas relações que estabelece e nos contextos em que vive."
         sections={sections}
       >
         <section id="apresentacao" className="reading-section" aria-labelledby="apresentacao-titulo">
@@ -30,16 +31,30 @@ export default function AboutPage() {
           <p>Compreender sentimentos, pensamentos e ações pede atenção às relações, às condições do presente e às experiências que construíram a história de cada pessoa.</p>
           <p>Na minha atuação, essa perspectiva se traduz em escuta, investigação e diálogo, sem reduzir a pessoa a um comportamento isolado. Psicoterapia e Avaliação Psicológica fazem parte do meu trabalho, com objetivos e procedimentos próprios.</p>
         </section>
-        <section id="especializacoes" className="reading-section" aria-labelledby="especializacoes-titulo">
-          <h2 id="especializacoes-titulo">Duas especializações, um compromisso com o cuidado</h2>
-          <div className="expertise-list">
-            <div><span className="small-label">01 · Psicoterapia</span><h3>Terapia Analítico-Comportamental</h3><p>Uma abordagem que investiga como os comportamentos se relacionam com o contexto e com a história de aprendizagem. A análise dessas relações orienta a construção do trabalho terapêutico.</p></div>
-            <div><span className="small-label">02 · Investigação psicológica</span><h3>Avaliação Psicológica</h3><p>Um processo de investigação que integra informações e procedimentos para compreender aspectos psicológicos e responder a uma questão delimitada, com responsabilidade técnica e ética.</p></div>
-          </div>
+        <section id="formacao-academica" className="reading-section" aria-labelledby="formacao-academica-titulo">
+          <h2 id="formacao-academica-titulo">Formação acadêmica</h2>
+          <ol className={`education-list ${styles.educationList}`} role="list">
+            <li>
+              <span className={styles.educationNumber} aria-hidden="true">01</span>
+              <div><strong>Graduação em Psicologia</strong><span>Universidade Presbiteriana Mackenzie</span></div>
+            </li>
+            <li>
+              <span className={styles.educationNumber} aria-hidden="true">02</span>
+              <div><strong>Especialização em Terapia Analítico-Comportamental</strong><span>PUC Paraná</span></div>
+            </li>
+            <li>
+              <span className={styles.educationNumber} aria-hidden="true">03</span>
+              <div><strong>Especialização em Avaliação Psicológica</strong><span>PUC Campinas</span></div>
+            </li>
+            <li>
+              <span className={styles.educationNumber} aria-hidden="true">04</span>
+              <div><strong>Especialização em Neurociências</strong><span>Faculdade Sírio-Libanês</span><span className={styles.inProgress}>Em andamento</span></div>
+            </li>
+          </ol>
         </section>
         <EditorialImage position="sobre" />
-        <section id="ciencia-e-etica" className="reading-section" aria-labelledby="ciencia-titulo">
-          <h2 id="ciencia-titulo">Conhecimento científico e ética caminham juntos</h2>
+        <section id="ciencia-e-etica" className={`reading-section ${styles.scienceSection}`} aria-labelledby="ciencia-titulo">
+          <h2 id="ciencia-titulo" className={styles.scienceTitle}>Conhecimento científico e ética caminham juntos</h2>
           <p>Uma prática fundamentada em ciência envolve estudar, avaliar a qualidade das informações e reconhecer o alcance e os limites do conhecimento disponível. As escolhas profissionais precisam considerar esse conhecimento em diálogo com as particularidades de cada situação.</p>
           <p>A ética profissional orienta a forma de escutar, comunicar, registrar informações e estabelecer os limites do trabalho. O respeito à autonomia, à dignidade e ao sigilo faz parte desse compromisso, consideradas as responsabilidades e as situações previstas nas normas profissionais.</p>
           <h3>O contexto importa</h3>
