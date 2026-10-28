@@ -14,7 +14,7 @@ export default function Home() {
           <div className="hero-copy">
             <p className="hero-eyebrow"><span aria-hidden="true" />Psicologia fundamentada em ciência</p>
             <h1 id="hero-heading">Compreender o<br className="wide-break" /> comportamento.<br />Cuidar de <em>pessoas.</em></h1>
-            <p className="hero-description">Cada pessoa tem uma história. Entender seu contexto e escutar cuidadosamente abrem caminhos para compreender o que você vive.</p>
+            <p className="hero-description">Cada pessoa tem uma história. Entender seu contexto e escutar cuidadosamente o que você compartilha a cada sessão abrem caminhos para compreender o que você vive.</p>
             <Link prefetch={false} className="button button-dark" href="/sobre/">Conheça meu trabalho <Arrow direction="diagonal" /></Link>
             <div className="hero-signature">
               <span className="signature-rule" aria-hidden="true" />
@@ -51,8 +51,9 @@ export default function Home() {
             <EditorialImage position="inicio" />
           </div>
           <div className="about-copy">
-            <p className="lead">Sou Eduardo Villela Tumani, psicólogo há mais de 15 anos. Meu trabalho considera não apenas o que cada pessoa sente, pensa e faz, mas também sua história de aprendizagem, suas relações e os contextos em que esses comportamentos se desenvolvem e se mantêm.</p>
-            <p>A ciência do comportamento orienta uma prática de escuta e investigação, com respeito ao que você vive e sente.</p>
+            <p className="lead">Sou Eduardo Villela Tumani, psicólogo há mais de 15 anos, com atuação nas áreas clínica, organizacional e social.</p>
+            <p>Meu trabalho considera não apenas o que cada pessoa sente, pensa e faz, mas também sua história de aprendizagem, suas relações e os contextos em que esses comportamentos se desenvolvem e se mantêm.</p>
+            <p>Minha atuação é orientada pela Análise do Comportamento e por uma prática baseada nas melhores evidências científicas disponíveis, integrando o conhecimento científico, a experiência profissional e as necessidades, os valores e o contexto de cada pessoa.</p>
             <div className="specialties" aria-label="Especializações"><span>Terapia Analítico-Comportamental</span><span>Avaliação Psicológica</span></div>
             <Link prefetch={false} className="text-link" href="/sobre/">Conheça minha atuação <Arrow direction="diagonal" /></Link>
           </div>
@@ -69,7 +70,7 @@ export default function Home() {
             <Link prefetch={false} className="service-card" href="/psicoterapia/" aria-labelledby="therapy-title therapy-link">
               <div className="service-card-top"><span className="service-number" aria-hidden="true">01 /</span><span className="service-arrow"><Arrow direction="diagonal" /></span></div>
               <h3 id="therapy-title">Psicoterapia</h3>
-              <p>Um espaço para compreender sentimentos, comportamentos e relações, construindo, em conjunto, novas formas de lidar com o que você vive.</p>
+              <p>Um espaço para compreender sentimentos, comportamentos e relações, que visa construir, em conjunto, novas formas de lidar com o que você vive.</p>
               <span className="service-link" id="therapy-link">Conheça o processo <Arrow /></span>
             </Link>
             <Link prefetch={false} className="service-card" href="/avaliacao-psicologica/" aria-labelledby="assessment-title assessment-link">
@@ -93,7 +94,7 @@ export default function Home() {
             <SectionLabel number="03">Minha abordagem</SectionLabel>
             <h2 className="section-heading" id="approach-heading">Ninguém existe<br /><em>fora de uma história.</em></h2>
             <p>A Terapia Analítico-Comportamental busca compreender como o que fazemos, pensamos e sentimos se relaciona com nossas experiências e com o ambiente em que vivemos.</p>
-            <p>A análise funcional investiga em quais situações um comportamento aparece e o que acontece antes e depois dele. Junto à história de aprendizagem, ajuda a compreender o papel desses padrões na vida da pessoa e a identificar condições que favoreçam sua mudança.</p>
+            <p>A análise funcional investiga em quais situações comportamentos surgem, assim como o que acontece antes e depois deles. Junto à história de aprendizagem, ajuda a identificar padrões, compreender a função desses comportamentos na vida da pessoa e reconhecer condições que favoreçam sua mudança.</p>
             <Link prefetch={false} className="text-link" href="/psicoterapia/">Saiba mais sobre a psicoterapia <Arrow direction="diagonal" /></Link>
           </div>
         </div>
