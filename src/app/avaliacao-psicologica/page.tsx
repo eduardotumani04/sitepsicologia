@@ -2,6 +2,7 @@ import { pageMetadata } from "@/lib/seo";
 import { InteriorPage } from "@/components/interior-page";
 import { ContactInvitation } from "@/components/contact-invitation";
 import { RelatedPages } from "@/components/related-pages";
+import styles from "./avaliacao.module.css";
 
 export const metadata = pageMetadata({
   title: "Avaliação Psicológica",
@@ -24,6 +25,7 @@ export default function AssessmentPage() {
         eyebrow="Avaliação Psicológica"
         title="Investigar para compreender."
         intro="Um processo estruturado para compreender aspectos psicológicos e responder a uma demanda delimitada, reunindo informações com cuidado, rigor técnico e responsabilidade ética."
+        introClassName={styles.intro}
         sections={sections}
       >
         <section id="o-que-e" className="reading-section" aria-labelledby="avaliacao-titulo">
