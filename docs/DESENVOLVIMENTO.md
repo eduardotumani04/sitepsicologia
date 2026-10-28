@@ -85,11 +85,13 @@ public/
 tests/site.spec.ts             Testes funcionais e de acessibilidade
 ```
 
-As fontes Cormorant Garamond e DM Sans são distribuídas localmente pelos
-pacotes Fontsource e incluídas no build, com licenças nos respectivos pacotes.
-Não há requisições ao Google Fonts. O Tailwind CSS 4 fornece os tokens do tema
-e as utilidades usadas na composição dos componentes; os estilos editoriais
-compartilhados ficam em `globals.css`.
+A família variável Manrope é carregada por `next/font/google` no layout raiz.
+O Next.js baixa os arquivos durante o build e os inclui nos recursos estáticos
+do próprio site: o navegador dos visitantes não faz requisições ao Google Fonts.
+O ambiente de build precisa permitir acesso HTTPS a `fonts.googleapis.com` e
+`fonts.gstatic.com`. O Tailwind CSS 4 associa `--font-sans` à variável
+`--font-manrope` por meio de `@theme inline`. Todos os componentes herdam a
+mesma família; pesos, tamanhos responsivos e espaçamentos ficam em `globals.css`.
 
 O único componente interativo no cliente é o cabeçalho, para navegação móvel
 e indicação da rota atual. As páginas não implementam APIs, autenticação,

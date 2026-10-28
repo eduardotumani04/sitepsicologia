@@ -1,12 +1,15 @@
 import type { Metadata, Viewport } from "next";
-import "@fontsource-variable/dm-sans";
-import "@fontsource/cormorant-garamond/latin-400.css";
-import "@fontsource/cormorant-garamond/latin-500.css";
-import "@fontsource/cormorant-garamond/latin-400-italic.css";
+import { Manrope } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { site } from "@/lib/site";
+
+const manrope = Manrope({
+  subsets: ["latin"],
+  variable: "--font-manrope",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: { default: `${site.name} | Psicologia`, template: `%s | ${site.name}` },
@@ -22,7 +25,7 @@ export const viewport: Viewport = { themeColor: "#F7F5F0", width: "device-width"
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="pt-BR" data-scroll-behavior="smooth">
+    <html lang="pt-BR" className={manrope.variable} data-scroll-behavior="smooth">
       <body>
         <a className="skip-link" href="#conteudo">Pular para o conteúdo</a>
         <SiteHeader />
