@@ -58,3 +58,9 @@ Veja [Publicação e pendências](docs/PUBLICACAO.md),
 [Imagens e direitos de uso](docs/IMAGENS.md) e
 [Conteúdo editorial](docs/EDITORIAL.md). Fotografias de terceiros ainda não foram
 incluídas por falta de verificação de direitos neste ambiente.
+
+As modalidades e os públicos confirmados estão centralizados em
+`src/lib/services.ts`. Os canais de `src/lib/contact.ts` exigem ativação explícita:
+WhatsApp segue sem número; o e-mail previsto permanece oculto até confirmação
+da caixa postal. Não há formulário; a estratégia futura compatível com hospedagem
+estática e backend PHP está em [Formulário administrativo](docs/FORMULARIO.md).

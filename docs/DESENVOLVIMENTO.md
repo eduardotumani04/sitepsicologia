@@ -82,6 +82,8 @@ src/
     not-found.tsx               Página 404
   components/                  Cabeçalho, rodapé e elementos compartilhados
   lib/site.ts                  Identificação profissional e navegação
+  lib/services.ts              Modalidades, públicos e regiões confirmados
+  lib/contact.ts               Canais com ativação pública explícita
 public/
   icon.svg                     Ícone tipográfico do site
   images/espaco-retrato.svg     Composição local para o futuro retrato
@@ -199,9 +201,20 @@ local e não constitui uma medição de usuários reais ou um resultado de Light
 
 As seis páginas públicas preservam Manrope, paleta e componentes aprovados.
 A inicial foi sintetizada e a seção de divulgação científica retirada. Notas
-internas e blocos incompletos de formação/atendimento não aparecem no site.
+internas e blocos incompletos não aparecem no site. Formação e informações
+práticas confirmadas pelo responsável foram incorporadas em revisões posteriores.
 Contato não apresenta cartões vazios ou ações que prometam envio; seus canais
-só são habilitados com dados confirmados em `src/lib/contact.ts`.
+só são habilitados com dados confirmados e `enabled: true` em `src/lib/contact.ts`.
+O e-mail previsto está configurado, mas desativado até teste da caixa postal;
+WhatsApp permanece sem número e desativado. Modalidades, públicos e regiões são
+derivados de `src/lib/services.ts`. O layout de Contato mantém os cartões de
+canais preparados e só os renderiza quando ativos; modalidades já são públicas.
+A Política de Privacidade descreve a navegação e os registros técnicos possíveis,
+sem presumir retenção ou operadores ainda não confirmados da hospedagem.
+
+O formulário administrativo **não** está implementado. A proposta PHP/PHPMailer
+e SMTP depende do plano contratado e está em [FORMULARIO.md](FORMULARIO.md).
+Não alterar a CSP para permitir formulários antes de existir processamento real.
 
 O acervo completo foi movido para `workbench/editorial/`, fora de `src/app` e
 `public`. Nenhum componente público ou sitemap importa o registro de artigos.
@@ -212,6 +225,7 @@ Consulte:
 - [PUBLICACAO.md](PUBLICACAO.md): decisões mínimas, visualização e envio seguro à Hostinger.
 - [IMAGENS.md](IMAGENS.md): direitos, fontes existentes e três fotografias pendentes.
 - [EDITORIAL.md](EDITORIAL.md): manutenção dos textos e reativação futura do acervo.
+- [FORMULARIO.md](FORMULARIO.md): proposta de backend administrativo e validação futura.
 
 Alterações devem ser revisadas na branch `feat/site-institucional` e no PR #1
 antes de qualquer merge na `main` ou publicação.

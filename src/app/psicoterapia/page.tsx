@@ -3,6 +3,8 @@ import { EditorialImage } from "@/components/editorial-image";
 import { InteriorPage } from "@/components/interior-page";
 import { ContactInvitation } from "@/components/contact-invitation";
 import { RelatedPages } from "@/components/related-pages";
+import { ServiceInformation } from "@/components/service-information";
+import { services } from "@/lib/services";
 import styles from "./psicoterapia.module.css";
 
 export const metadata = pageMetadata({
@@ -27,6 +29,7 @@ export default function TherapyPage() {
         title="Um espaço para compreender."
         intro="Um processo de escuta e investigação sobre o que você sente, pensa e faz, considerando sua história de aprendizagem, suas relações e as condições em que vive, para construir, em conjunto, novas possibilidades de mudança."
         introClassName={styles.intro}
+        meta={<ServiceInformation text={services.psicoterapia.practicalInformation} />}
         sections={sections}
       >
         <section id="o-que-e" className="reading-section" aria-labelledby="terapia-titulo">

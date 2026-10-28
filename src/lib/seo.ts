@@ -1,6 +1,6 @@
 import type { Metadata, MetadataRoute } from "next";
 import { site } from "./site";
-import { contact } from "./contact";
+import { hasContactChannel } from "./contact";
 
 export function createSeoSettings(values: { SITE_URL?: string; SITE_INDEXING_ENABLED?: string }) {
   let url: string | null = null;
@@ -68,6 +68,6 @@ export function siteRobots(settings: SeoSettings = seoSettings): MetadataRoute.R
 export function siteSitemap(settings: SeoSettings = seoSettings): MetadataRoute.Sitemap {
   if (!settings.url || !settings.indexingEnabled) return [];
   const paths = ["/", "/sobre/", "/psicoterapia/", "/avaliacao-psicologica/"];
-  if (contact.professionalChannel || contact.whatsapp || contact.email) paths.push("/contato/");
+  if (hasContactChannel) paths.push("/contato/");
   return paths.map(path => ({ url: new URL(path, `${settings.url}/`).href }));
 }

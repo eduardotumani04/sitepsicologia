@@ -4,6 +4,8 @@ import { ContactInvitation } from "@/components/contact-invitation";
 import { SectionLabel } from "@/components/section-label";
 import { EditorialImage } from "@/components/editorial-image";
 import { StructuredData } from "@/components/structured-data";
+import { services } from "@/lib/services";
+import styles from "./home.module.css";
 
 export default function Home() {
   return (
@@ -70,12 +72,14 @@ export default function Home() {
             <Link prefetch={false} className="service-card" href="/psicoterapia/" aria-labelledby="therapy-title therapy-link">
               <div className="service-card-top"><span className="service-number" aria-hidden="true">01 /</span><span className="service-arrow"><Arrow direction="diagonal" /></span></div>
               <h3 id="therapy-title">Psicoterapia</h3>
+              <span className={styles.serviceDetails}>{services.psicoterapia.summaryLabel}</span>
               <p>Um espaço para compreender sentimentos, comportamentos e relações, que visa construir, em conjunto, novas formas de lidar com o que você vive.</p>
               <span className="service-link" id="therapy-link">Conheça o processo <Arrow /></span>
             </Link>
             <Link prefetch={false} className="service-card" href="/avaliacao-psicologica/" aria-labelledby="assessment-title assessment-link">
               <div className="service-card-top"><span className="service-number" aria-hidden="true">02 /</span><span className="service-arrow"><Arrow direction="diagonal" /></span></div>
               <h3 id="assessment-title">Avaliação Psicológica</h3>
+              <span className={styles.serviceDetails}>{services.avaliacaoPsicologica.summaryLabel}</span>
               <p>Uma investigação que integra diferentes formas de informação para responder a uma demanda específica, com rigor técnico, científico e ético.</p>
               <span className="service-link" id="assessment-link">Entenda a avaliação <Arrow /></span>
             </Link>

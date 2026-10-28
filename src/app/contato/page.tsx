@@ -2,30 +2,27 @@ import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { InteriorPage } from "@/components/interior-page";
 import { Arrow } from "@/components/arrow";
-import { contact, hasContactChannel, whatsappHref } from "@/lib/contact";
+import { contactChannels, hasContactChannel } from "@/lib/contact";
+import { services } from "@/lib/services";
+import styles from "./contato.module.css";
 
 export const metadata = pageMetadata({
   title: "Contato",
-  description: "Informações de contato de Eduardo Villela Tumani, psicólogo — CRP 06/127526. Conheça os canais profissionais disponíveis neste site.",
+  description: "Informações sobre modalidades de atendimento e canais profissionais de Eduardo Villela Tumani, psicólogo — CRP 06/127526.",
   path: "/contato/",
   indexable: hasContactChannel,
 });
 
 export default function ContactPage() {
-  const channels = [
-    { title: "Canal profissional", value: contact.professionalChannel?.label, href: contact.professionalChannel?.url, action: "Acessar canal profissional" },
-    { title: "WhatsApp", value: contact.whatsapp, href: whatsappHref(contact.whatsapp), action: "Abrir WhatsApp" },
-    { title: "E-mail", value: contact.email, href: contact.email ? `mailto:${contact.email}` : null, action: "Escrever e-mail" },
-  ].filter(channel => channel.href && channel.value);
-
   return (
     <InteriorPage
       eyebrow="Contato"
-      title="Informação e cuidado desde o início."
-      intro="Informações profissionais de Eduardo Villela Tumani, psicólogo — CRP 06/127526."
+      title="Vamos conversar."
+      intro="Entre em contato para esclarecer dúvidas sobre os serviços, modalidades de atendimento e disponibilidade de horários."
+      introClassName={styles.intro}
       sections={[
         { id: "canais", title: "Canais profissionais" },
-        ...(contact.modality ? [{ id: "atendimento", title: "Sobre o atendimento" }] : []),
+        { id: "atendimento", title: "Modalidades de atendimento" },
         { id: "orientacoes", title: "Informação e privacidade" },
       ]}
     >
@@ -34,29 +31,33 @@ export default function ContactPage() {
         {hasContactChannel ? (
           <>
             <p>Utilize os canais abaixo para solicitar informações sobre o trabalho.</p>
-            <div className="contact-channels">
-              {channels.map((channel, index) => (
-                <section className="contact-channel" key={channel.title} aria-labelledby={`canal-${index}`}>
-                  <h3 id={`canal-${index}`}>{channel.title}</h3>
+            <div className={`contact-channels ${styles.channels}`}>
+              {contactChannels.map(channel => (
+                <section className="contact-channel" key={channel.kind} aria-labelledby={`canal-${channel.kind}`}>
+                  <h3 id={`canal-${channel.kind}`}>{channel.title}</h3>
                   <p className="contact-value">{channel.value}</p>
-                  <a className="text-link" href={channel.href!} rel="noreferrer">{channel.action} <Arrow direction="diagonal" /></a>
+                  <a className="text-link" href={channel.href} rel="noreferrer">{channel.action} <Arrow direction="diagonal" /></a>
                 </section>
               ))}
             </div>
           </>
         ) : (
-          <>
-            <p>Não há canais de contato disponíveis neste site no momento. Esta página não recebe mensagens ou solicitações de agendamento.</p>
-            <p>Você pode conhecer a <Link prefetch={false} href="/sobre/">minha atuação</Link> e entender como funciona a <Link prefetch={false} href="/psicoterapia/">psicoterapia</Link>.</p>
-          </>
+          <p>Não há canais de contato disponíveis neste site no momento. Esta página não recebe mensagens ou solicitações de agendamento.</p>
         )}
       </section>
-      {contact.modality && (
-        <section className="reading-section" id="atendimento" aria-labelledby="atendimento-titulo">
-          <h2 id="atendimento-titulo">Sobre o atendimento</h2>
-          <p>{contact.modality}</p>
-        </section>
-      )}
+      <section className="reading-section" id="atendimento" aria-labelledby="atendimento-titulo">
+        <h2 id="atendimento-titulo">Modalidades de atendimento</h2>
+        <div className={styles.modalities}>
+          {Object.values(services).map(service => (
+            <section className={styles.modality} key={service.href} aria-labelledby={`modalidade-${service.modality.toLowerCase()}`}>
+              <h3 id={`modalidade-${service.modality.toLowerCase()}`}>{service.title}</h3>
+              <p>{service.contactSummary}</p>
+              {service.regionSummary && <p>{service.regionSummary}</p>}
+              <Link prefetch={false} className="text-link" href={service.href}>Conheça o serviço <Arrow /></Link>
+            </section>
+          ))}
+        </div>
+      </section>
       <section className="reading-section" id="orientacoes" aria-labelledby="orientacoes-titulo">
         <h2 id="orientacoes-titulo">Informação e privacidade</h2>
         {hasContactChannel && <p>Utilize o primeiro contato para dúvidas gerais. Evite enviar relatos clínicos detalhados, resultados de testes ou documentos sensíveis em uma mensagem inicial.</p>}

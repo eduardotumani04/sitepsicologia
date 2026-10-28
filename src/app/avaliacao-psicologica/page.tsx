@@ -2,6 +2,8 @@ import { pageMetadata } from "@/lib/seo";
 import { InteriorPage } from "@/components/interior-page";
 import { ContactInvitation } from "@/components/contact-invitation";
 import { RelatedPages } from "@/components/related-pages";
+import { ServiceInformation } from "@/components/service-information";
+import { services } from "@/lib/services";
 import styles from "./avaliacao.module.css";
 
 export const metadata = pageMetadata({
@@ -26,6 +28,7 @@ export default function AssessmentPage() {
         title="Investigar para compreender."
         intro="Um processo estruturado para compreender aspectos psicológicos e responder a uma demanda delimitada, reunindo informações com cuidado, rigor técnico e responsabilidade ética."
         introClassName={styles.intro}
+        meta={<ServiceInformation text={services.avaliacaoPsicologica.practicalInformation} />}
         sections={sections}
       >
         <section id="o-que-e" className="reading-section" aria-labelledby="avaliacao-titulo">

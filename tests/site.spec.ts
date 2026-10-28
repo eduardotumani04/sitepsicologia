@@ -4,6 +4,7 @@ import { readFile, readdir } from "node:fs/promises";
 import { join } from "node:path";
 import { createSeoSettings, pageMetadata, siteRobots, siteSitemap } from "../src/lib/seo";
 import { articles } from "../workbench/editorial/lib/articles";
+import { contact, getContactChannels, type ContactInformation } from "../src/lib/contact";
 
 declare global {
   interface Window { __auditCls: number; }
@@ -326,13 +327,67 @@ test("índice de leitura e perguntas frequentes funcionam por teclado", async ({
 
 test("contato não publica canais não confirmados e rotas inexistentes retornam 404", async ({ page, request }) => {
   await page.goto("/contato/");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Vamos conversar.");
+  await expect(page.locator(".interior-intro")).toHaveText("Entre em contato para esclarecer dúvidas sobre os serviços, modalidades de atendimento e disponibilidade de horários.");
   await expect(page.locator(".contact-channel")).toHaveCount(0);
   await expect(page.locator(".contact-channel a")).toHaveCount(0);
   await expect(page.locator('a[href^="mailto:"], a[href*="wa.me"], form, input, textarea')).toHaveCount(0);
-  await expect(page.locator("#atendimento")).toHaveCount(0);
+  await expect(page.locator("#atendimento")).toBeVisible();
+  await expect(page.getByText("contato@psieduardotumani.com.br", { exact: true })).toHaveCount(0);
   await expect(page.getByText("Não há canais de contato disponíveis neste site no momento.", { exact: false })).toBeVisible();
   const missing = await request.get("/conteudos/artigo-inexistente/");
   expect(missing.status()).toBe(404);
+  await page.goto("/privacidade/");
+  await expect(page.locator("#contato, #direitos")).toHaveCount(0);
+  await expect(page.getByText("O provedor pode manter registros técnicos", { exact: false })).toBeVisible();
+});
+
+test("canais exigem ativação explícita e geram destinos válidos", () => {
+  expect(getContactChannels()).toEqual([]);
+  expect(contact.email).toEqual({ enabled: false, address: "contato@psieduardotumani.com.br" });
+  const configured: ContactInformation = {
+    professionalChannel: null,
+    whatsapp: { enabled: false, number: "+12025550123" },
+    email: { enabled: false, address: "contato@example.com" },
+  };
+  expect(getContactChannels(configured)).toEqual([]);
+  expect(getContactChannels({ ...configured, whatsapp: { ...configured.whatsapp, enabled: true } })).toEqual([
+    { kind: "whatsapp", title: "WhatsApp", value: "+12025550123", href: "https://wa.me/12025550123", action: "Conversar pelo WhatsApp" },
+  ]);
+  expect(getContactChannels({ ...configured, email: { ...configured.email, enabled: true } })).toEqual([
+    { kind: "email", title: "E-mail", value: "contato@example.com", href: "mailto:contato@example.com", action: "Enviar e-mail" },
+  ]);
+  expect(() => getContactChannels({ ...configured, whatsapp: { enabled: true, number: null } })).toThrow();
+  expect(() => getContactChannels({ ...configured, whatsapp: { enabled: true, number: "(11) 00000-0000" } })).toThrow();
+  expect(() => getContactChannels({ ...configured, email: { enabled: true, address: "contato@example.com?bcc=outro@example.com" } })).toThrow();
+});
+
+test("serviços mantêm públicos, modalidades e regiões consistentes entre as páginas", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator('a.service-card[href="/psicoterapia/"]')).toContainText("Online · Adultos e idosos");
+  await expect(page.locator('a.service-card[href="/avaliacao-psicologica/"]')).toContainText("Presencial · Crianças, adultos e idosos");
+  await page.goto("/psicoterapia/");
+  await expect(page.getByRole("note", { name: "Informações de atendimento" })).toHaveText("Atendimento online para adultos e idosos.");
+  await page.goto("/avaliacao-psicologica/");
+  await expect(page.getByRole("note", { name: "Informações de atendimento" })).toHaveText("Atendimento presencial para crianças, adultos e idosos, nas regiões de Santana e Cerqueira César (Avenida Paulista), em São Paulo/SP.");
+  await page.goto("/contato/");
+  await expect(page.locator("#atendimento")).toContainText("Online, para adultos e idosos.");
+  await expect(page.locator("#atendimento")).toContainText("Presencial, para crianças, adultos e idosos.");
+  await expect(page.locator("#atendimento")).toContainText("Regiões: Santana e Cerqueira César (Avenida Paulista), São Paulo/SP.");
+  for (const width of [1440, 1280, 1024, 768, 390]) {
+    await page.setViewportSize({ width, height: 1000 });
+    const first = await page.locator("#modalidade-online").boundingBox();
+    const second = await page.locator("#modalidade-presencial").boundingBox();
+    expect(first).not.toBeNull();
+    expect(second).not.toBeNull();
+    if (width >= 768) {
+      expect(second!.y).toBe(first!.y);
+      expect(second!.x).toBeGreaterThan(first!.x);
+    } else {
+      expect(second!.x).toBe(first!.x);
+      expect(second!.y).toBeGreaterThan(first!.y);
+    }
+  }
 });
 
 test("menu móvel funciona por teclado, fecha com Escape e navega", async ({ page }) => {
@@ -368,7 +423,7 @@ test("atalho de teclado permite pular a navegação", async ({ page }) => {
 });
 
 test("páginas se adaptam de 320 a 1440 pixels sem rolagem horizontal", async ({ page }) => {
-  for (const width of [320, 390, 768, 1024, 1440]) {
+  for (const width of [320, 390, 768, 1024, 1280, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     for (const route of routes) {
       await page.goto(route);

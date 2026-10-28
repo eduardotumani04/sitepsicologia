@@ -1,7 +1,7 @@
 import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { InteriorPage } from "@/components/interior-page";
-import { hasContactChannel } from "@/lib/contact";
+import { contactChannels, hasContactChannel } from "@/lib/contact";
 
 export const metadata = pageMetadata({
   title: "Política de Privacidade",
@@ -21,6 +21,7 @@ export default function PrivacyPage() {
         { id: "navegacao", title: "Navegação e recursos" },
         { id: "dados", title: "Dados e rastreamento" },
         { id: "hospedagem", title: "Infraestrutura" },
+        ...(hasContactChannel ? [{ id: "contato", title: "Canais de contato" }] : []),
         ...(hasContactChannel ? [{ id: "direitos", title: "Questões de privacidade" }] : []),
       ]}
     >
@@ -41,8 +42,19 @@ export default function PrivacyPage() {
       <section className="reading-section" id="hospedagem" aria-labelledby="hospedagem-titulo">
         <h2 id="hospedagem-titulo">Infraestrutura de navegação</h2>
         <p>A entrega das páginas depende da infraestrutura de hospedagem. Como parte da conexão, essa infraestrutura recebe informações técnicas da requisição, como o endereço IP e o recurso solicitado.</p>
+        <p>O provedor pode manter registros técnicos de acesso e segurança, que também podem incluir data e hora, informações do navegador e ocorrências de erro. A existência de registros e suas condições de acesso e retenção dependem da configuração e das políticas do serviço de hospedagem.</p>
         <p>A aplicação não utiliza essas informações para criar perfis, enviar publicidade ou realizar avaliações psicológicas. O site não possui banco de dados de visitantes ou de pacientes.</p>
       </section>
+      {hasContactChannel && (
+        <section className="reading-section" id="contato" aria-labelledby="contato-titulo">
+          <h2 id="contato-titulo">Contato por canais profissionais</h2>
+          <p>Ao iniciar uma conversa por um canal divulgado no site, você compartilha as informações da mensagem e os dados de identificação associados ao canal, como nome, número de telefone ou endereço de e-mail. Essas informações são utilizadas para responder à solicitação e tratar assuntos profissionais ou administrativos.</p>
+          {contactChannels.some(channel => channel.kind === "whatsapp") && <p>O link do WhatsApp abre um serviço externo. O envio e a entrega das mensagens dependem desse serviço e de suas próprias condições de privacidade. O site não incorpora o WhatsApp nem envia mensagens automaticamente.</p>}
+          {contactChannels.some(channel => channel.kind === "email") && <p>O botão de e-mail abre o aplicativo de correio escolhido por você. A mensagem é processada pelos serviços de e-mail envolvidos no envio e no recebimento, fora desta aplicação.</p>}
+          {contactChannels.some(channel => channel.kind === "professional") && <p>O canal profissional externo possui suas próprias condições de funcionamento e privacidade, que devem ser consultadas ao acessá-lo.</p>}
+          <p>Use o primeiro contato para informações gerais. Evite enviar relatos clínicos detalhados, documentos ou resultados de testes. Não há formulário neste site, e uma mensagem inicial não constitui atendimento psicológico.</p>
+        </section>
+      )}
       {hasContactChannel && (
         <section className="reading-section" id="direitos" aria-labelledby="direitos-titulo">
           <h2 id="direitos-titulo">Questões de privacidade</h2>
