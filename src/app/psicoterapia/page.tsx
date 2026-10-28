@@ -3,6 +3,7 @@ import { EditorialImage } from "@/components/editorial-image";
 import { InteriorPage } from "@/components/interior-page";
 import { ContactInvitation } from "@/components/contact-invitation";
 import { RelatedPages } from "@/components/related-pages";
+import styles from "./psicoterapia.module.css";
 
 export const metadata = pageMetadata({
   title: "Psicoterapia",
@@ -24,13 +25,14 @@ export default function TherapyPage() {
       <InteriorPage
         eyebrow="Psicoterapia"
         title="Um espaço para compreender."
-        intro="Um processo de escuta e investigação sobre o que você sente, pensa e faz, considerando sua história, suas relações e as condições em que vive."
+        intro="Um processo de escuta e investigação sobre o que você sente, pensa e faz, considerando sua história de aprendizagem, suas relações e as condições em que vive, para construir, em conjunto, novas possibilidades de mudança."
+        introClassName={styles.intro}
         sections={sections}
       >
         <section id="o-que-e" className="reading-section" aria-labelledby="terapia-titulo">
           <h2 id="terapia-titulo">O que é psicoterapia?</h2>
           <p>A psicoterapia é um trabalho profissional em que questões da vida de uma pessoa são acolhidas e investigadas por meio de uma relação terapêutica e de procedimentos fundamentados em conhecimento psicológico.</p>
-          <p>As conversas podem envolver sentimentos, escolhas, relações e dificuldades do cotidiano. O psicólogo participa dessa investigação, ajuda a observar relações e discute possibilidades de trabalho.</p>
+          <p>As sessões podem abordar sentimentos, escolhas, relações e dificuldades do cotidiano. O psicólogo participa dessa investigação, ajuda a observar relações e discute possibilidades de trabalho.</p>
           <p>Os objetivos não precisam estar todos definidos no primeiro encontro. Eles podem ser esclarecidos e revistos ao longo do processo, de acordo com as necessidades identificadas.</p>
         </section>
         <section id="abordagem" className="reading-section" aria-labelledby="abordagem-titulo">
@@ -66,7 +68,7 @@ export default function TherapyPage() {
           <div className="faq-list">
             <details><summary>Preciso chegar com tudo o que quero trabalhar definido?</summary><p>Não. As questões podem ser apresentadas aos poucos, e a compreensão da demanda faz parte do trabalho. As primeiras conversas ajudam a esclarecer o que poderá ser abordado.</p></details>
             <details><summary>A psicoterapia consiste apenas em receber conselhos?</summary><p>O trabalho envolve investigar relações e construir uma compreensão das questões apresentadas. As intervenções dependem do contexto, da avaliação profissional e dos objetivos discutidos, e não se resumem a uma lista de orientações prontas.</p></details>
-            <details><summary>É possível definir antecipadamente quanto tempo vai durar?</summary><p>Não há uma duração que se aplique a todos os acompanhamentos. Essa conversa depende da demanda, do contexto e da avaliação do percurso, e deve ser retomada quando necessário.</p></details>
+            <details><summary>É possível definir antecipadamente quanto tempo vai durar?</summary><p>Não há uma duração que se aplique a todos os acompanhamentos. Essa definição depende da demanda, do contexto e da avaliação do percurso, e deve ser retomada quando necessário.</p></details>
           </div>
         </section>
         <RelatedPages pages={[

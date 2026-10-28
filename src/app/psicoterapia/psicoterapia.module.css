@@ -1,0 +1,9 @@
+.intro:global(.interior-intro) {
+  max-width: 950px;
+}
+
+@media (min-width: 1024px) {
+  .intro:global(.interior-intro) {
+    text-wrap: balance;
+  }
+}
