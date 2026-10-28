@@ -9,6 +9,7 @@ type InteriorPageProps = {
   eyebrow: string;
   title: string;
   intro: string;
+  introClassName?: string;
   sections?: readonly PageSection[];
   backHref?: string;
   backLabel?: string;
@@ -17,7 +18,7 @@ type InteriorPageProps = {
 };
 
 export function InteriorPage({
-  eyebrow, title, intro, sections = [], backHref = "/", backLabel = "Voltar ao início", meta, children,
+  eyebrow, title, intro, introClassName, sections = [], backHref = "/", backLabel = "Voltar ao início", meta, children,
 }: InteriorPageProps) {
   return (
     <>
@@ -26,7 +27,7 @@ export function InteriorPage({
           <Link prefetch={false} href={backHref} className="back-link"><Arrow /> {backLabel}</Link>
           <SectionLabel>{eyebrow}</SectionLabel>
           <h1 id="page-title">{title}</h1>
-          <p className="interior-intro">{intro}</p>
+          <p className={introClassName ? `interior-intro ${introClassName}` : "interior-intro"}>{intro}</p>
           {meta}
         </div>
       </section>

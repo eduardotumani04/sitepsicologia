@@ -23,7 +23,8 @@ export default function AboutPage() {
       <InteriorPage
         eyebrow="Sobre mim"
         title="Ciência, escuta e compreensão."
-        intro="Sou Eduardo Villela Tumani. Há mais de 15 anos, atuo como psicólogo nas áreas clínica, organizacional e social. Essa trajetória reforça minha compreensão de que cada pessoa precisa ser considerada em sua história de aprendizagem, nas relações que estabelece e nos contextos em que vive."
+        intro="Sou Eduardo Villela Tumani, psicólogo há mais de 15 anos, com atuação nas áreas clínica, organizacional e social. Minha prática é orientada pela Análise do Comportamento."
+        introClassName={styles.intro}
         sections={sections}
       >
         <section id="apresentacao" className="reading-section" aria-labelledby="apresentacao-titulo">

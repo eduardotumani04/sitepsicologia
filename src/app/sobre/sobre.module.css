@@ -1,3 +1,7 @@
+.intro:global(.interior-intro) {
+  max-width: 950px;
+}
+
 .educationList > li {
   display: grid;
   grid-template-columns: 1.75rem minmax(0, 1fr);
