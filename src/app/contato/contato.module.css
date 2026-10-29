@@ -2,6 +2,19 @@
   max-width: 950px;
 }
 
+.channels {
+  gap: 0;
+  border: 1px solid var(--line);
+}
+
+.channels > :global(.contact-channel) {
+  border: 0;
+}
+
+.channels > :global(.contact-channel + .contact-channel) {
+  border-left: 1px solid var(--line);
+}
+
 .channels > :global(.contact-channel:first-child) {
   grid-column: auto;
 }
@@ -45,6 +58,11 @@
 }
 
 @media (max-width: 767px) {
+  .channels > :global(.contact-channel + .contact-channel) {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+
   .modalities {
     grid-template-columns: minmax(0, 1fr);
     gap: 28px;
