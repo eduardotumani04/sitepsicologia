@@ -323,13 +323,13 @@ test("índice de leitura e perguntas frequentes funcionam por teclado", async ({
   await expect(page.locator(".faq-list details").first()).not.toHaveAttribute("open");
 });
 
-test("contato publica apenas o WhatsApp confirmado e rotas inexistentes retornam 404", async ({ page, request }) => {
+test("contato publica WhatsApp e e-mail profissional e rotas inexistentes retornam 404", async ({ page, request }) => {
   await page.goto("/contato/");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Vamos conversar.");
   await expect(page.locator(".interior-intro")).toHaveText("Entre em contato para esclarecer dúvidas sobre os serviços, modalidades de atendimento e disponibilidade de horários.");
-  await expect(page.locator(".contact-channel")).toHaveCount(1);
-  await expect(page.locator(".contact-channel h3")).toHaveText("WhatsApp");
-  await expect(page.locator(".contact-channel .contact-value")).toHaveText("(11) 94367-6864");
+  await expect(page.locator(".contact-channel")).toHaveCount(2);
+  await expect(page.locator(".contact-channel h3")).toHaveText(["WhatsApp", "E-mail"]);
+  await expect(page.locator(".contact-channel .contact-value")).toHaveText(["(11) 94367-6864", "contato@psieduardotumani.com.br"]);
   const whatsapp = page.getByRole("link", { name: "Conversar pelo WhatsApp" });
   await expect(whatsapp).toHaveCount(1);
   await expect(whatsapp).toBeVisible();
@@ -340,7 +340,7 @@ test("contato publica apenas o WhatsApp confirmado e rotas inexistentes retornam
   expect(await whatsapp.evaluate(element => getComputedStyle(element).outlineStyle)).toBe("solid");
   await expect(page.locator('a[href^="mailto:"], form, input, textarea')).toHaveCount(0);
   await expect(page.locator("#atendimento")).toBeVisible();
-  await expect(page.getByText("contato@psieduardotumani.com.br", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("contato@psieduardotumani.com.br", { exact: true })).toBeVisible();
   await expect(page.getByText("Não há canais de contato disponíveis", { exact: false })).toHaveCount(0);
   const missing = await request.get("/conteudos/artigo-inexistente/");
   expect(missing.status()).toBe(404);
@@ -349,7 +349,7 @@ test("contato publica apenas o WhatsApp confirmado e rotas inexistentes retornam
   await expect(page.locator("#contato")).toContainText("O link do WhatsApp abre um serviço externo.");
   await expect(page.locator("#contato")).toContainText("O site não incorpora o WhatsApp nem envia mensagens automaticamente.");
   await expect(page.locator("#contato")).toContainText("Essas informações são utilizadas para responder à solicitação");
-  await expect(page.locator("#contato")).not.toContainText("O botão de e-mail");
+  await expect(page.locator("#contato")).toContainText("O botão de e-mail");
   await expect(page.locator("#direitos")).toBeVisible();
   await expect(page.locator("#direitos a")).toHaveAttribute("href", "/contato/");
   await expect(page.getByText("O provedor pode manter registros técnicos", { exact: false })).toBeVisible();
@@ -360,7 +360,7 @@ test("canais exigem ativação explícita e geram destinos válidos", () => {
   expect(getContactChannels()).toEqual([
     { kind: "whatsapp", title: "WhatsApp", value: "(11) 94367-6864", href: "https://wa.me/5511943676864", action: "Conversar pelo WhatsApp" },
   ]);
-  expect(contact.email).toEqual({ enabled: false, address: "contato@psieduardotumani.com.br" });
+  expect(contact.email).toEqual({ enabled: true, address: "contato@psieduardotumani.com.br" });
   const configured: ContactInformation = {
     professionalChannel: null,
     whatsapp: { enabled: false, number: "+12025550123" },
