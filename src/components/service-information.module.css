@@ -1,0 +1,10 @@
+.information {
+  max-width: 950px;
+  margin-top: 26px;
+  padding: 16px 20px;
+  border-left: 2px solid #8a987c;
+  background: #eceee5;
+  color: var(--forest);
+  font-size: 13px;
+  line-height: 1.75;
+}
