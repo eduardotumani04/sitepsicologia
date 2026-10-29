@@ -8,7 +8,7 @@ export type ContactInformation = {
 // WhatsApp: formato internacional com +, código do país e número, sem espaços.
 export const contact: ContactInformation = {
   professionalChannel: null,
-  whatsapp: { enabled: false, number: null },
+  whatsapp: { enabled: true, number: "+5511943676864" },
   email: { enabled: false, address: "contato@psieduardotumani.com.br" },
 };
 
@@ -18,6 +18,11 @@ export function whatsappHref(number: string | null): string | null {
     throw new Error("O WhatsApp precisa estar no formato internacional: +, código do país e número, sem espaços.");
   }
   return `https://wa.me/${number.slice(1)}`;
+}
+
+function whatsappDisplayNumber(number: string): string {
+  const brazilianMobile = /^\+55(\d{2})(\d{5})(\d{4})$/.exec(number);
+  return brazilianMobile ? `(${brazilianMobile[1]}) ${brazilianMobile[2]}-${brazilianMobile[3]}` : number;
 }
 
 export type ContactChannel = {
@@ -41,7 +46,7 @@ export function getContactChannels(configuration: ContactInformation = contact):
   if (configuration.whatsapp.enabled) {
     const href = whatsappHref(configuration.whatsapp.number);
     if (!href) throw new Error("Informe o número profissional antes de ativar o WhatsApp.");
-    channels.push({ kind: "whatsapp", title: "WhatsApp", value: configuration.whatsapp.number!, href, action: "Conversar pelo WhatsApp" });
+    channels.push({ kind: "whatsapp", title: "WhatsApp", value: whatsappDisplayNumber(configuration.whatsapp.number!), href, action: "Conversar pelo WhatsApp" });
   }
   if (configuration.email.enabled) {
     const address = configuration.email.address;
