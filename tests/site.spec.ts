@@ -338,7 +338,8 @@ test("contato publica WhatsApp e e-mail profissional e rotas inexistentes retorn
   await whatsapp.focus();
   await expect(whatsapp).toBeFocused();
   expect(await whatsapp.evaluate(element => getComputedStyle(element).outlineStyle)).toBe("solid");
-  await expect(page.locator('a[href^="mailto:"], form, input, textarea')).toHaveCount(0);
+  await expect(page.locator('a[href="mailto:contato@psieduardotumani.com.br"]')).toHaveCount(1);
+  await expect(page.locator('form, input, textarea')).toHaveCount(0);
   await expect(page.locator("#atendimento")).toBeVisible();
   await expect(page.getByText("contato@psieduardotumani.com.br", { exact: true })).toBeVisible();
   await expect(page.getByText("Não há canais de contato disponíveis", { exact: false })).toHaveCount(0);
@@ -359,6 +360,7 @@ test("canais exigem ativação explícita e geram destinos válidos", () => {
   expect(contact.whatsapp).toEqual({ enabled: true, number: "+5511943676864" });
   expect(getContactChannels()).toEqual([
     { kind: "whatsapp", title: "WhatsApp", value: "(11) 94367-6864", href: "https://wa.me/5511943676864", action: "Conversar pelo WhatsApp" },
+    { kind: "email", title: "E-mail", value: "contato@psieduardotumani.com.br", href: "mailto:contato@psieduardotumani.com.br", action: "Enviar e-mail" },
   ]);
   expect(contact.email).toEqual({ enabled: true, address: "contato@psieduardotumani.com.br" });
   const configured: ContactInformation = {
@@ -378,13 +380,16 @@ test("canais exigem ativação explícita e geram destinos válidos", () => {
   expect(() => getContactChannels({ ...configured, email: { enabled: true, address: "contato@example.com?bcc=outro@example.com" } })).toThrow();
 });
 
-test("páginas mantêm chamadas de contato funcionais sem publicar e-mail ou formulários", async ({ page }) => {
+test("páginas mantêm chamadas de contato funcionais sem formulários", async ({ page }) => {
   for (const route of routes) {
     await page.goto(route);
     await expect(page.locator(".header-contact")).toHaveText("Vamos conversar");
     await expect(page.locator(".header-contact")).toHaveAttribute("href", "/contato/");
-    await expect(page.locator('a[href^="mailto:"], form, input, textarea')).toHaveCount(0);
-    expect(await page.getByRole("main").innerText()).not.toContain("contato@psieduardotumani.com.br");
+    await expect(page.locator('a[href="mailto:contato@psieduardotumani.com.br"]')).toHaveCount(route === "/contato/" ? 1 : 0);
+    await expect(page.locator('form, input, textarea')).toHaveCount(0);
+    if (route === "/contato/") {
+      expect(await page.getByRole("main").innerText()).toContain("contato@psieduardotumani.com.br");
+    }
     await expect(page.getByText("Não há canais de contato disponíveis", { exact: false })).toHaveCount(0);
     for (const action of await page.locator(".contact-invitation .button").all()) {
       await expect(action).toHaveText("Ir para contato");
