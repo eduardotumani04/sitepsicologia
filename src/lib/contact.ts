@@ -9,7 +9,7 @@ export type ContactInformation = {
 export const contact: ContactInformation = {
   professionalChannel: null,
   whatsapp: { enabled: true, number: "+5511943676864" },
-  email: { enabled: false, address: "contato@psieduardotumani.com.br" },
+  email: { enabled: true, address: "contato@psieduardotumani.com.br" },
 };
 
 export function whatsappHref(number: string | null): string | null {
