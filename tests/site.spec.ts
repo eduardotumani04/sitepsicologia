@@ -101,7 +101,7 @@ test("sitemap e robots são exportados e excluem conteúdos sem aprovação", as
     for (const url of parsed.urls) {
       const path = new URL(url).pathname;
       expect(path).not.toMatch(/^\/conteudos(?:\/|$)/);
-      expect(["/privacidade/", "/contato/"]).not.toContain(path);
+      expect(path).not.toBe("/privacidade/");
       expect((await request.get(path)).status()).toBe(200);
     }
   }
@@ -122,7 +122,7 @@ test("configuração SEO valida origem oficial e não presume domínio ou endere
     alternates: { canonical: "https://example.com/sobre/" },
     openGraph: { url: "https://example.com/sobre/", title: "Sobre mim | Eduardo Villela Tumani" },
   });
-  expect(siteSitemap(configured).map(entry => new URL(entry.url).pathname)).toEqual(["/", "/sobre/", "/psicoterapia/", "/avaliacao-psicologica/"]);
+  expect(siteSitemap(configured).map(entry => new URL(entry.url).pathname)).toEqual(["/", "/sobre/", "/psicoterapia/", "/avaliacao-psicologica/", "/contato/"]);
 });
 
 test("dados estruturados descrevem somente a identidade profissional verificável", async ({ page }) => {
@@ -301,8 +301,6 @@ test("Conteúdos e rascunhos ficam fora das rotas, recursos e links públicos", 
     await expect(page.getByRole("link", { name: "Conteúdos", exact: true })).toHaveCount(0);
     await expect(page.locator(".knowledge-section, .editorial-note, .pending-label, .status-tag")).toHaveCount(0);
     expect(await page.locator("body").innerText()).not.toMatch(/a confirmar|em desenvolvimento|em preparação|em construção|revisão editorial|rascunho|retrato a ser adicionado/i);
-    await expect(page.locator('a[href^="mailto:"], a[href*="wa.me"]')).toHaveCount(0);
-    await expect(page.getByRole("link", { name: /vamos conversar|ir para contato|agend[ae]/i })).toHaveCount(0);
     for (const action of await page.locator(".contact-invitation .button").all()) {
       expect(await action.getAttribute("href"), route).not.toBe(route);
     }
@@ -325,25 +323,43 @@ test("índice de leitura e perguntas frequentes funcionam por teclado", async ({
   await expect(page.locator(".faq-list details").first()).not.toHaveAttribute("open");
 });
 
-test("contato não publica canais não confirmados e rotas inexistentes retornam 404", async ({ page, request }) => {
+test("contato publica apenas o WhatsApp confirmado e rotas inexistentes retornam 404", async ({ page, request }) => {
   await page.goto("/contato/");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Vamos conversar.");
   await expect(page.locator(".interior-intro")).toHaveText("Entre em contato para esclarecer dúvidas sobre os serviços, modalidades de atendimento e disponibilidade de horários.");
-  await expect(page.locator(".contact-channel")).toHaveCount(0);
-  await expect(page.locator(".contact-channel a")).toHaveCount(0);
-  await expect(page.locator('a[href^="mailto:"], a[href*="wa.me"], form, input, textarea')).toHaveCount(0);
+  await expect(page.locator(".contact-channel")).toHaveCount(1);
+  await expect(page.locator(".contact-channel h3")).toHaveText("WhatsApp");
+  await expect(page.locator(".contact-channel .contact-value")).toHaveText("(11) 94367-6864");
+  const whatsapp = page.getByRole("link", { name: "Conversar pelo WhatsApp" });
+  await expect(whatsapp).toHaveCount(1);
+  await expect(whatsapp).toBeVisible();
+  await expect(whatsapp).toHaveAttribute("href", "https://wa.me/5511943676864");
+  await expect(page.locator('a[href*="wa.me"]')).toHaveCount(1);
+  await whatsapp.focus();
+  await expect(whatsapp).toBeFocused();
+  expect(await whatsapp.evaluate(element => getComputedStyle(element).outlineStyle)).toBe("solid");
+  await expect(page.locator('a[href^="mailto:"], form, input, textarea')).toHaveCount(0);
   await expect(page.locator("#atendimento")).toBeVisible();
   await expect(page.getByText("contato@psieduardotumani.com.br", { exact: true })).toHaveCount(0);
-  await expect(page.getByText("Não há canais de contato disponíveis neste site no momento.", { exact: false })).toBeVisible();
+  await expect(page.getByText("Não há canais de contato disponíveis", { exact: false })).toHaveCount(0);
   const missing = await request.get("/conteudos/artigo-inexistente/");
   expect(missing.status()).toBe(404);
   await page.goto("/privacidade/");
-  await expect(page.locator("#contato, #direitos")).toHaveCount(0);
+  await expect(page.locator("#contato")).toBeVisible();
+  await expect(page.locator("#contato")).toContainText("O link do WhatsApp abre um serviço externo.");
+  await expect(page.locator("#contato")).toContainText("O site não incorpora o WhatsApp nem envia mensagens automaticamente.");
+  await expect(page.locator("#contato")).toContainText("Essas informações são utilizadas para responder à solicitação");
+  await expect(page.locator("#contato")).not.toContainText("O botão de e-mail");
+  await expect(page.locator("#direitos")).toBeVisible();
+  await expect(page.locator("#direitos a")).toHaveAttribute("href", "/contato/");
   await expect(page.getByText("O provedor pode manter registros técnicos", { exact: false })).toBeVisible();
 });
 
 test("canais exigem ativação explícita e geram destinos válidos", () => {
-  expect(getContactChannels()).toEqual([]);
+  expect(contact.whatsapp).toEqual({ enabled: true, number: "+5511943676864" });
+  expect(getContactChannels()).toEqual([
+    { kind: "whatsapp", title: "WhatsApp", value: "(11) 94367-6864", href: "https://wa.me/5511943676864", action: "Conversar pelo WhatsApp" },
+  ]);
   expect(contact.email).toEqual({ enabled: false, address: "contato@psieduardotumani.com.br" });
   const configured: ContactInformation = {
     professionalChannel: null,
@@ -360,6 +376,24 @@ test("canais exigem ativação explícita e geram destinos válidos", () => {
   expect(() => getContactChannels({ ...configured, whatsapp: { enabled: true, number: null } })).toThrow();
   expect(() => getContactChannels({ ...configured, whatsapp: { enabled: true, number: "(11) 00000-0000" } })).toThrow();
   expect(() => getContactChannels({ ...configured, email: { enabled: true, address: "contato@example.com?bcc=outro@example.com" } })).toThrow();
+});
+
+test("páginas mantêm chamadas de contato funcionais sem publicar e-mail ou formulários", async ({ page }) => {
+  for (const route of routes) {
+    await page.goto(route);
+    await expect(page.locator(".header-contact")).toHaveText("Vamos conversar");
+    await expect(page.locator(".header-contact")).toHaveAttribute("href", "/contato/");
+    await expect(page.locator('a[href^="mailto:"], form, input, textarea')).toHaveCount(0);
+    expect(await page.getByRole("main").innerText()).not.toContain("contato@psieduardotumani.com.br");
+    await expect(page.getByText("Não há canais de contato disponíveis", { exact: false })).toHaveCount(0);
+    for (const action of await page.locator(".contact-invitation .button").all()) {
+      await expect(action).toHaveText("Ir para contato");
+      await expect(action).toHaveAttribute("href", "/contato/");
+    }
+    for (const link of await page.locator('a[href*="wa.me"]').all()) {
+      await expect(link).toHaveAttribute("href", "https://wa.me/5511943676864");
+    }
+  }
 });
 
 test("serviços mantêm públicos, modalidades e regiões consistentes entre as páginas", async ({ page }) => {
